@@ -381,34 +381,218 @@ body {
   font-size: 0.875rem;
   color: #6b7280;
 }
+.greyspace{
+    height: 30px;
+    background-color: #c7c4c4;
+    width: 100%;
+}
+.bottom-bar{
+    background-color: #303034;
+    display: flex;
+    padding: 25px 30px;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+}
+.b-b-left{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.b-b-left span{
+    font-weight: bold;
+}
+.bottom-bar button{
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.bottom-bar button:hover{
+    background-color: #ff5b4a;
+}
+.features-section{
+    background-color: #414042;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 30px;
+    flex-wrap: wrap;
+}
+.feature{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    margin: 10px 0;
+}
+.feature i {
+    font-size: 35px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+.feature p {
+    font-size: 13px;
+    color: #ccc;
+    margin: 0;
+}
+.footer-container {
+    background-color: #333339;
+    padding: 40px 60px;
+    line-height: 1.8;
+}
 
+.footer-section {
+    margin-bottom: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
+.footer-section h3 {
+    color: #c9c2c0;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: #a8a8a8;
+    text-decoration: none;
+    font-size: 13px;
+    margin-right: 10px;
+}
+
+.footer-section a:hover {
+    color: #f84464;
+    text-decoration: underline;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #2a2a2a;
+    margin: 25px 0;
+}
+.footer-logo-text {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #333339;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.footer-logo::before,
+.footer-logo::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid #777; 
+    margin: 0 15px;
+}
+
+.footer-logo img {
+    height: 30px;
+}
+
+.social-icons {
+    margin: 20px 0;
+}
+
+.social-icons a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 20px;
+    margin: 0 10px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background: #3a3a3a;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.footer-text {
+    font-size: 13px;
+    max-width: 800px;
+    margin: 10px auto 0;
+    line-height: 1.5;
+    color: #aaa;
+}
 
 @media (max-width: 768px) {
-.cards-container,.live-event-cards {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-}
-.card {
-    flex: 0 0 60%;
-    margin-right: 20px;
-}
-.premire-cards-container {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-}
 
-.premire-cards-container .card {
-    flex: 0 0 60%;
-    margin-right: 20px;
-}
- .section-cards-container {
-    overflow-x: auto;   
-    flex-wrap: nowrap; 
-}
+    .search-box {
+        display: none; 
+    }
 
-.section-cards-container .card {
-    flex: 0 0 60%;       /* Show ~2 cards at a time */
-    margin-right: 20px; 
-}
+    .location {
+        display: none; 
+    }
+
+    .nav1 {
+        justify-content: space-between; /* Push logo and right section to the edges */
+    }
+
+    .nav2 {
+        display: none;
+    }
+    .cards-container,.live-event-cards {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    .card {
+        flex: 0 0 60%;
+        margin-right: 20px;
+    }
+    .premire-cards-container {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+
+    .premire-cards-container .card {
+        flex: 0 0 60%;
+        margin-right: 20px;
+    }
+    .section-cards-container {
+        overflow-x: auto;   
+        flex-wrap: nowrap; 
+    }
+
+    .section-cards-container .card {
+        flex: 0 0 60%;       /* Show ~2 cards at a time */
+        margin-right: 20px; 
+    }
+    .bottom-bar{
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .footer-container {
+        padding: 20px;
+    }
+
+    .footer-section h3 {
+        font-size: 14px;
+    }
+
+    .footer-section a {
+        display: inline-block;
+        margin-bottom: 6px;
+    }
 }
