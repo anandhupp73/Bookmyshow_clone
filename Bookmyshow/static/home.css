@@ -152,6 +152,11 @@ body {
     justify-content: space-between; 
     gap: 20px;            
     /* background-color: #e73355;       */
+    padding-bottom: 20px;
+}
+.cards-container a{
+    text-decoration: none;
+    color: black;
 }
 
 .card {

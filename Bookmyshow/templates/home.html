@@ -7,7 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Document</title>
+    <title>{% block title %}Home Page{% endblock %}</title>
 </head>
 
 <body>
@@ -52,272 +52,279 @@
                 </div>
             </div>
         </header>
-        <div class="whitepart"></div>
-        <div class="ad-container">
-            <div class="ad-card">
-                <img src="{% static 'images/ad1.avif' %}" alt="Ad">
-            </div>
-        </div>
-        <div class="moviecards">
-            <div class="head">
-                <div class="left">
-                    <p>Recommended Movies</p>
-                </div>
-                <div class="right">
-                    <a href="">See All</a>
+        <div>
+            {% block content %}
+            <!-- space-for-template-inheritance -->
+            <div class="whitepart"></div>
+            <div class="ad-container">
+                <div class="ad-card">
+                    <img src="{% static 'images/ad1.avif' %}" alt="Ad">
                 </div>
             </div>
-
-            <div class="cards-container">
-                <div class="card">
-                    <img src="{% static 'images/kantara.avif'%}" alt="Poster">
-                    <p class="title">Kantara</p>
-                    <p class="genre">Adventure/Drama/Thriller</p>
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/lokah.avif'%}" alt="Poster">
-                    <p class="title">Lokah</p>
-                    <p class="genre">Action/Comedy/Fantasy</p>
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/karam.avif'%}" alt="Poster">
-                    <p class="title">Karam</p>
-                    <p class="genre">Action/Thriller</p>
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/demonslayer.avif'%}" alt="Poster">
-                    <p class="title">Demonslayer</p>
-                    <p class="genre">Action/Adventure/Anime</p>
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/balti.avif'%}" alt="Poster">
-                    <p class="title">Balti</p>
-                    <p class="genre">Action/Sports/Thriller</p>
-                </div>
-            </div>
-        </div>
-        <div class="ad-container2">
-            <div class="ad-card2">
-                <img src="{% static 'images/ad3.avif'%}" alt="">
-            </div>
-        </div>
-        <div class="live-events">
-            <div class="heading">
-                <p>The Best Of Live Events</p>
-            </div>
-            <div class="live-event-cards">
-                <div class="card">
-                    <img src="{% static 'images/icc.avif'%}" alt="icc">
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/aparks.png'%}" alt="parks">
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/kids.png'%}" alt="kids">
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/mshows.jpeg'%}" alt="shows">
-                </div>
-                <div class="card">
-                    <img src="{% static 'images/cshow.avif'%}" alt="shows">
-                </div>
-            </div>
-        </div>
-        <!-- Premiere Section -->
-        <div class="premire">
-            <div class="premire-wrapper">
-                <div class="premire-logo-text">
-                    <img src="{% static 'images/premireimg.avif' %}" alt="Premiere Banner">
+            <div class="moviecards">
+                <div class="head">
+                    <div class="left">
+                        <p>Recommended Movies</p>
+                    </div>
+                    <div class="right">
+                        <a href="">See All</a>
+                    </div>
                 </div>
 
-                <!-- Cards Under Banner -->
-                <div class="premire-cards-head">
-                    <p>Premiere Movies</p>
-                </div>
-
-                <div class="premire-cards-container">
+                <div class="cards-container">
                     <div class="card">
-                        <img src="{% static 'images/nwatch.avif' %}" alt="Poster">
-                        <p class="title">New Watch</p>
-                        <p class="genre">Action/Drama</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/placebo.avif' %}" alt="Poster">
-                        <p class="title">Placebo</p>
-                        <p class="genre">Fantasy/Comedy</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/maria.avif' %}" alt="Poster">
-                        <p class="title">Maria</p>
-                        <p class="genre">Thriller</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/killer.avif' %}" alt="Poster">
-                        <p class="title">Killer</p>
-                        <p class="genre">Action</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/hashtag.avif' %}" alt="Poster">
-                        <p class="title">Hashtag</p>
-                        <p class="genre">comedy</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- popular events -->
-        <div class="popular-events">
-            <div class="section-wrapper">
-                <div class="section-head">
-                    <p>Popular Events</p>
-                </div>
-                <div class="section-cards-container">
-                    <!-- cards -->
-                    <div class="card">
-                        <img src="{% static 'images/pe1.avif' %}" alt="Poster">
-                        <p class="title">Rhyme&Rythm</p>
-                        <p class="genre">Anime/kids</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/pe2.avif' %}" alt="Poster">
-                        <p class="title">Nykaaland</p>
-                        <p class="genre">Animation</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/pe3.avif' %}" alt="Poster">
-                        <p class="title">Maestero series</p>
-                        <p class="genre">Action/Drama</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/pe4.avif' %}" alt="Poster">
-                        <p class="title">Photography</p>
-                        <p class="genre">contest/prizes</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/pe5.avif' %}" alt="Poster">
-                        <p class="title">India tour</p>
-                        <p class="genre">Music/album</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- games & sports -->
-        <div class="games-sports">
-            <div class="section-wrapper">
-                <div class="section-head">
-                    <p>Top Games & Sports Events</p>
-                </div>
-                <div class="section-cards-container">
-                    <div class="card">
-                        <img src="{% static 'images/gs1.avif' %}" alt="Poster">
+                        <a href="../movies/">
+                        <img src="{% static 'images/kantara.avif'%}" alt="Poster">
                         <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <p class="genre">Adventure/Drama/Thriller</p>
+                        </a>
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/gs2.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/lokah.avif'%}" alt="Poster">
+                        <p class="title">Lokah</p>
+                        <p class="genre">Action/Comedy/Fantasy</p>
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/gs3.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/karam.avif'%}" alt="Poster">
+                        <p class="title">Karam</p>
+                        <p class="genre">Action/Thriller</p>
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/gs4.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/demonslayer.avif'%}" alt="Poster">
+                        <p class="title">Demonslayer</p>
+                        <p class="genre">Action/Adventure/Anime</p>
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/gs5.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/balti.avif'%}" alt="Poster">
+                        <p class="title">Balti</p>
+                        <p class="genre">Action/Sports/Thriller</p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- fun activites -->
-        <div class="fun-activities">
-            <div class="section-wrapper">
-                <div class="section-head">
-                    <p>Editor's Choice</p>
+            <div class="ad-container2">
+                <div class="ad-card2">
+                    <img src="{% static 'images/ad3.avif'%}" alt="">
                 </div>
-                <div class="section-cards-container">
+            </div>
+            <div class="live-events">
+                <div class="heading">
+                    <p>The Best Of Live Events</p>
+                </div>
+                <div class="live-event-cards">
                     <div class="card">
-                        <img src="{% static 'images/f1.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/icc.avif'%}" alt="icc">
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/f2.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/aparks.png'%}" alt="parks">
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/f3.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/kids.png'%}" alt="kids">
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/f4.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/mshows.jpeg'%}" alt="shows">
                     </div>
                     <div class="card">
-                        <img src="{% static 'images/f5.avif' %}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Action/Drama</p>
+                        <img src="{% static 'images/cshow.avif'%}" alt="shows">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="trending-container">
-            <h2>Trending Searches Right Now</h2>
-            <div class="trending-grid">
+            <!-- Premiere Section -->
+            <div class="premire">
+                <div class="premire-wrapper">
+                    <div class="premire-logo-text">
+                        <img src="{% static 'images/premireimg.avif' %}" alt="Premiere Banner">
+                    </div>
 
-                <a href="#" class="trending-card">
-                    <span class="card-title">Kantara: A Legend Chapter-1</span>
-                    <span class="card-category">Movies</span>
-                </a>
+                    <!-- Cards Under Banner -->
+                    <div class="premire-cards-head">
+                        <p>Premiere Movies</p>
+                    </div>
 
-                <a href="#" class="trending-card">
-                    <span class="card-title">Lokah: Chapter 1 - Chandra</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">Kantara (Malayalam)</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">Balti</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">DP World Asia Cup 2025 (IND vs PAK)(Finals)</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">Kantharam</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">Kantara (Tamil)</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
-                <a href="#" class="trending-card">
-                    <span class="card-title">Demon Slayer: Kimetsu no Yaiba Infinity Castle</span>
-                    <span class="card-category">Movies</span>
-                </a>
-
+                    <div class="premire-cards-container">
+                        <div class="card">
+                            <img src="{% static 'images/nwatch.avif' %}" alt="Poster">
+                            <p class="title">New Watch</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/placebo.avif' %}" alt="Poster">
+                            <p class="title">Placebo</p>
+                            <p class="genre">Fantasy/Comedy</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/maria.avif' %}" alt="Poster">
+                            <p class="title">Maria</p>
+                            <p class="genre">Thriller</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/killer.avif' %}" alt="Poster">
+                            <p class="title">Killer</p>
+                            <p class="genre">Action</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/hashtag.avif' %}" alt="Poster">
+                            <p class="title">Hashtag</p>
+                            <p class="genre">comedy</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- popular events -->
+            <div class="popular-events">
+                <div class="section-wrapper">
+                    <div class="section-head">
+                        <p>Popular Events</p>
+                    </div>
+                    <div class="section-cards-container">
+                        <!-- cards -->
+                        <div class="card">
+                            <img src="{% static 'images/pe1.avif' %}" alt="Poster">
+                            <p class="title">Rhyme&Rythm</p>
+                            <p class="genre">Anime/kids</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/pe2.avif' %}" alt="Poster">
+                            <p class="title">Nykaaland</p>
+                            <p class="genre">Animation</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/pe3.avif' %}" alt="Poster">
+                            <p class="title">Maestero series</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/pe4.avif' %}" alt="Poster">
+                            <p class="title">Photography</p>
+                            <p class="genre">contest/prizes</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/pe5.avif' %}" alt="Poster">
+                            <p class="title">India tour</p>
+                            <p class="genre">Music/album</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- games & sports -->
+            <div class="games-sports">
+                <div class="section-wrapper">
+                    <div class="section-head">
+                        <p>Top Games & Sports Events</p>
+                    </div>
+                    <div class="section-cards-container">
+                        <div class="card">
+                            <img src="{% static 'images/gs1.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/gs2.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/gs3.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/gs4.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/gs5.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- fun activites -->
+            <div class="fun-activities">
+                <div class="section-wrapper">
+                    <div class="section-head">
+                        <p>Editor's Choice</p>
+                    </div>
+                    <div class="section-cards-container">
+                        <div class="card">
+                            <img src="{% static 'images/f1.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/f2.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/f3.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/f4.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                        <div class="card">
+                            <img src="{% static 'images/f5.avif' %}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Action/Drama</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="trending-container">
+                <h2>Trending Searches Right Now</h2>
+                <div class="trending-grid">
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Kantara: A Legend Chapter-1</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Lokah: Chapter 1 - Chandra</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Kantara (Malayalam)</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Balti</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">DP World Asia Cup 2025 (IND vs PAK)(Finals)</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Kantharam</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Kantara (Tamil)</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                    <a href="#" class="trending-card">
+                        <span class="card-title">Demon Slayer: Kimetsu no Yaiba Infinity Castle</span>
+                        <span class="card-category">Movies</span>
+                    </a>
+
+                </div>
+            </div>
+            {% endblock %}
         </div>
         <div class="greyspace"></div>
         <footer>
