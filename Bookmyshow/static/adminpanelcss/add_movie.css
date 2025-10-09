@@ -1,0 +1,195 @@
+/* adminpanelcss/add_movie.css */
+
+/* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+/* --- General Body Styles --- */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1f2937; /* A modern, cool-toned slate gray */
+    color: #d1d5db; /* Soft off-white text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- Main Form Container --- */
+.container {
+    background-color: #374151; /* A lighter slate gray for the form */
+    padding: 40px;
+    border-radius: 16px; /* Softer corners */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #4b5563;
+}
+
+/* --- Heading Style --- */
+h1 {
+    color: #f9fafb; /* A brighter white for the heading */
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* --- Form Element Styling --- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between form elements */
+}
+
+/* --- Common styles for Text Inputs and Textarea --- */
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 15px;
+    background-color: #4b5563; /* Input background */
+    border: 1px solid #6b7280; /* Subtle border */
+    border-radius: 8px;
+    color: #d1d5db;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* --- Focus effect for inputs (modern ring style) --- */
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3b82f6; /* Vibrant blue accent */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* --- Placeholder text style --- */
+::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+/* --- File Input Styling --- */
+label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #d1d5db;
+    margin-bottom: -10px;
+}
+
+input[type="file"] {
+    background-color: #4b5563;
+    border: 1px dashed #6b7280;
+    border-radius: 8px;
+    padding: 12px;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Style for the button inside the file input */
+input[type="file"]::-webkit-file-upload-button {
+    background: #3b82f6; /* Blue accent */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: background-color 0.2s;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background: #60a5fa; /* Lighter blue on hover */
+}
+
+input[type="file"]:hover {
+    background-color: #525c6a;
+}
+
+/* --- Message/Alert Styling (NEW) --- */
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    color: #f9fafb;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid;
+    margin: 0 0 10px 0;
+}
+
+.message:last-child {
+    margin-bottom: 0;
+}
+
+/* Success Message - Green */
+.message.success {
+    background-color: #103b2d;
+    border-color: #10b981;
+}
+
+/* Error Message - Red */
+.message.error {
+    background-color: #450a0a;
+    border-color: #f87171;
+}
+
+/* Info Message - Blue */
+.message.info {
+    background-color: #1e3a8a;
+    border-color: #60a5fa;
+}
+
+/* Warning Message - Yellow */
+.message.warning {
+    background-color: #422006;
+    border-color: #fbbf24;
+}
+
+
+/* --- Submit Button --- */
+button[type="submit"] {
+    background: #3b82f6; /* Blue accent */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #60a5fa; /* Lighter blue on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+}

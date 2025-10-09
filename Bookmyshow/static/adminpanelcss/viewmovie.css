@@ -1,0 +1,92 @@
+/* General Body Styles */
+body {
+    background-color: #141414; /* Dark background for a cinematic feel */
+    color: #ffffff; /* White text color */
+    font-family: 'Inter', sans-serif; /* A clean, modern font */
+    margin: 0;
+    padding: 2rem;
+}
+
+/* Page Title Styling */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    color: #e50914; /* A classic red for a movie theme */
+}
+
+/* Movie Grid Container */
+.movie-grid {
+    display: grid;
+    /* Creates a responsive grid that fits as many cards as possible */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem; /* Spacing between the movie cards */
+    max-width: 1600px;
+    margin: 0 auto; /* Center the grid */
+}
+
+/* Individual Movie Card */
+.movie-card {
+    background-color: #1c1c1c; /* Slightly lighter than the body background */
+    border-radius: 12px; /* Rounded corners */
+    overflow: hidden; /* Ensures the image respects the rounded corners */
+    text-decoration: none; /* Removes underline from the link */
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05); /* Slightly enlarges the card on hover */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Enhances the shadow on hover */
+}
+
+/* Movie Poster Image */
+.movie-poster {
+    width: 100%;
+    height: 375px; /* Fixed height for a uniform look */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    display: block;
+}
+
+/* Placeholder for movies without an image */
+.no-image-placeholder {
+    width: 100%;
+    height: 375px;
+    background-color: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-weight: 500;
+}
+
+/* Movie Info Section (Title and Genre) */
+.movie-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Movie Title */
+.movie-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    /* Prevents long titles from breaking the layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Movie Genre */
+.movie-genre {
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.4;
+}

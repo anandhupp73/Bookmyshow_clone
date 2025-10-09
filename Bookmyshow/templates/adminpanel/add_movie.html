@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD MOVIE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/add_movie.css' %}">
+</head>
+
+<body>
+     <div class="container">
+        <h1>Add New Movie</h1>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'add_movie' %}">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Movie Title" required>
+            <textarea name="description" placeholder="Description" rows="4" required></textarea>
+            <input type="date" name="release_date" required>
+
+            <input type="text" name="duration" placeholder="Duration (e.g. 2h 15m)" required>
+            <input type="text" name="language" placeholder="Language (e.g. English)" required>
+            <input type="text" name="genre" placeholder="Genre (e.g. Action, Drama)" required>
+
+            <label>Cover Image:</label>
+            <input type="file" name="cover_image">
+            <label>Main Image:</label>
+            <input type="file" name="main_image">
+
+            <button type="submit">Add Movie</button>
+        </form>
+    </div>
+</body>
+
+</html>

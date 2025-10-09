@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVIES</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/viewmovie.css' %}">
+</head>
+
+<body>
+
+</body>
+<h1>🎬 Movies</h1>
+
+<div class="movie-grid">
+    {% for movie in movies %}
+    <a href="{% url 'movie_details' movie.id %}" class="movie-card">
+        {% if movie.main_image %}
+        <img src="{{ movie.main_image.url }}" alt="{{ movie.title }}" class="movie-poster">
+        {% else %}
+        <div style="height:330px;background:#ddd;display:flex;align-items:center;justify-content:center;color:#666;">
+            No Image
+        </div>
+        {% endif %}
+
+        <div class="movie-info">
+            <div class="movie-title">{{ movie.title }}</div>
+            <div class="movie-genre">{{ movie.genre }}</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+</html>

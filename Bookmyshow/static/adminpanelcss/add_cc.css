@@ -1,0 +1,30 @@
+body { font-family: Poppins, sans-serif;
+    background: #f4f6f8; 
+}
+.container { max-width: 600px; 
+    margin: 50px auto; 
+    background: #fff; 
+    padding: 30px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+h1 { text-align: center; 
+    color: #333; 
+}
+form { display: flex; 
+    flex-direction: column; 
+}
+input, select { margin-bottom: 15px; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+}
+button { background: #4f46e5; 
+    color: white; 
+    border: none; 
+    padding: 10px; 
+    border-radius: 6px;
+}
+button:hover { 
+    background: #3730a3; 
+}

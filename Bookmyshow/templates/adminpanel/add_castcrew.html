@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD CAST AND CREW</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/add_cc.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add Cast or Crew</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'add_castcrew' %}">
+            {% csrf_token %}
+            <select name="movie" required>
+                <option value="">Select Movie</option>
+                {% for m in movies %}
+                <option value="{{ m.id }}">{{ m.title }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="role" placeholder="Role (Actor, Director...)" required>
+            <label>Profile Image:</label>
+            <input type="file" name="profile_image">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</body>
+
+</html>

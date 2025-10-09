@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/dashboard.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Admin Dashboard</h1>
+
+        <div class="stats">
+            <div class="card">
+                <div class="icon">🎞️</div>
+                <h2>{{ movie_count }}</h2>
+                <p>Movies</p>
+            </div>
+            <div class="card">
+                <div class="icon">🎭</div>
+                <h2>{{ cast_count }}</h2>
+                <p>Cast & Crew</p>
+            </div>
+            <div class="card">
+                <div class="icon">⭐</div>
+                <h2>{{ review_count }}</h2>
+                <p>Reviews</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a href="{% url 'add_movie' %}" class="btn">🎬 Add Movie</a>
+            <a href="{% url 'view_movies' %}" class="btn">📚 View Movies</a>
+            <a href="{% url 'add_castcrew' %}" class="btn">👥 Add Cast & Crew</a>
+            <a href="{% url 'view_reviews' %}" class="btn">💬 View Reviews</a>
+        </div>
+    </div>
+</body>
+</html>
