@@ -1,68 +1,220 @@
-body {
-    font-family: Poppins, sans-serif;
-    background: #f4f6f8;
-    margin: 0;
-    padding: 40px;
-    display: flex;
-    justify-content: center;
+/* Base Styling & Dark Theme Setup */
+:root {
+    --primary-color: #e50914; /* Netflix Red or similar accent */
+    --background-dark: #141414;
+    --text-light: #f5f5f5;
+    --card-background: #222222;
+    --border-color: #333333;
 }
 
-.container {
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensures it stays on top of all other content */
+}
+
+.admin-back-button {
+    /* Style the button like a professional UI element */
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: var(--card-background); /* Darker background */
+    color: var(--primary-color); /* Red accent color for the text/icon */
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.admin-back-button:hover {
+    background-color: var(--primary-color); /* Highlight on hover */
+    color: var(--text-light); /* Change text to light on hover */
+    transform: translateY(-1px); /* Subtle lift effect */
+    border-color: var(--primary-color);
+}
+/* --- Container and Header --- */
+.movie-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.movie-header {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .movie-poster {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Deep shadow for cinematic depth */
+}
+
+.header-content {
+    flex-grow: 1;
 }
 
 .title {
-    font-size: 2rem;
-    color: #222;
+    font-size: 3em;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text-light);
+}
+
+/* Pill-Style Details */
+.main-details-group {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.detail-pill {
+    background-color: var(--card-background);
+    color: var(--text-light);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    border: 1px solid var(--primary-color);
+}
+
+.detail-pill strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* --- Plot Summary Section --- */
+.plot-summary {
+    margin-bottom: 40px;
+}
+
+.plot-summary h2, .cast-crew-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8em;
+    border-left: 5px solid var(--primary-color);
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.plot-summary p {
+    font-size: 1.1em;
+    color: #cccccc;
+}
+
+/* --- Cast and Crew Section --- */
+.cast-crew-list {
+    display: grid;
+    /* Responsive grid: minimum card width of 150px, automatically adjust columns */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.cast-crew-member {
+    background-color: var(--card-background);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cast-crew-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%; /* Circular images */
     margin-bottom: 10px;
+    border: 3px solid var(--primary-color);
 }
 
-.detail {
-    color: #555;
-    margin-bottom: 8px;
-    font-size: 1rem;
+/* Placeholder for missing images */
+.profile-image.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    color: var(--card-background);
+    background-color: #666;
+    font-weight: bold;
 }
 
-.buttons {
-    margin-top: 20px;
+.member-name {
+    font-size: 1.1em;
+    color: var(--text-light);
+    margin-bottom: 3px;
+    display: block; /* Ensure it takes full width */
 }
 
-.btn {
-    display: inline-block;
-    padding: 10px 18px;
-    margin-right: 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    color: #fff;
-    transition: background 0.3s ease;
+.member-role {
+    font-size: 0.9em;
+    color: #aaa;
+    font-style: italic;
 }
 
-.btn-edit {
-    background: #007bff;
-}
+/* --- Media Queries for Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .movie-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 
-.btn-edit:hover {
-    background: #0056b3;
-}
+    .movie-poster {
+        width: 100%; /* Full width on smaller screens */
+        max-width: 250px;
+        margin-bottom: 20px;
+    }
 
-.btn-delete {
-    background: #e63946;
-}
+    .title {
+        font-size: 2em;
+    }
 
-.btn-delete:hover {
-    background: #b22a34;
+    .main-details-group {
+        justify-content: center;
+        flex-wrap: wrap; /* Allow pills to wrap if needed */
+    }
+
+    .cast-crew-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .profile-image {
+        width: 80px;
+        height: 80px;
+    }
+}
+@media (max-width: 480px) {
+    .back-button-container {
+        top: 10px;
+        left: 10px;
+    }
+    .admin-back-button {
+        padding: 8px 12px;
+        font-size: 0.8em;
+    }
 }

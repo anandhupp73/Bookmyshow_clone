@@ -8,11 +8,19 @@ body {
     background-color: #fff;
 }
 
+header{
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
 .nav1 {
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 12px 40px;
+    background-color: #fff;
     border-bottom: 1px solid #eee;
 }
 

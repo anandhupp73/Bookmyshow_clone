@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 from django.contrib import messages
+from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.decorators import user_passes_test  
 
 # Create your views here.
 
@@ -10,7 +12,34 @@ def home(request):
 def movies(request):
     return render(request,'movie.html')
 
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            if user.is_staff:  
+                login(request, user)
+                return redirect('admin_dashboard')  # your custom dashboard view
+            else:
+                messages.error(request, 'You are not authorized to access admin panel.')
+        else:
+            messages.error(request, 'Invalid credentials')
+    return render(request, 'adminpanel/login.html')
+
+def admin_logout(request):
+    logout(request)
+    return redirect('admin_login')
+
+def is_admin_user(user):
+    return user.is_authenticated and user.is_staff       #restricted to logged-in staff users:
+
+@user_passes_test(is_admin_user)
 def admin_dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
     movie_count = Movie.objects.count()
     cast_count = CastCrew.objects.count()
     review_count = Review.objects.count()

@@ -6,6 +6,8 @@
     <title>Admin Dashboard</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'adminpanelcss/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
     <div class="container">
@@ -13,17 +15,23 @@
 
         <div class="stats">
             <div class="card">
-                <div class="icon">🎞️</div>
+                <div class="icon">
+                    <i class="fa-solid fa-film"></i>
+                </div>
                 <h2>{{ movie_count }}</h2>
                 <p>Movies</p>
             </div>
             <div class="card">
-                <div class="icon">🎭</div>
+                <div class="icon">
+                    <i class="fa-solid fa-masks-theater"></i>
+                </div>
                 <h2>{{ cast_count }}</h2>
                 <p>Cast & Crew</p>
             </div>
             <div class="card">
-                <div class="icon">⭐</div>
+                <div class="icon">
+                    <i class="fa-regular fa-star"></i>
+                </div>
                 <h2>{{ review_count }}</h2>
                 <p>Reviews</p>
             </div>
@@ -34,6 +42,9 @@
             <a href="{% url 'view_movies' %}" class="btn">📚 View Movies</a>
             <a href="{% url 'add_castcrew' %}" class="btn">👥 Add Cast & Crew</a>
             <a href="{% url 'view_reviews' %}" class="btn">💬 View Reviews</a>
+        </div>
+        <div class="logout">
+            <a href="{% url 'admin_logout' %}">Logout admin</a>
         </div>
     </div>
 </body>
