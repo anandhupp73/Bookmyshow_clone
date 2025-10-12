@@ -28,7 +28,17 @@
                         Kochi
                     </div>
                     <div class="signin-btn">
-                        <button>Sign in</button>
+                        {% if request.user.is_authenticated %}
+                            {% if request.session.is_user_logged_in %}
+                                <button onclick="window.location.href='{% url 'user_logout' %}'">
+                                    Logout ({{ request.user.username }})
+                                </button>
+                            {% else %}
+                                <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
+                            {% endif %}
+                        {% else %}
+                            <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
+                        {% endif %}
                     </div>
                     <div class="menu">
                         <i class="fa-solid fa-bars"></i>
@@ -74,9 +84,9 @@
                 <div class="cards-container">
                     <div class="card">
                         <a href="../movies/">
-                        <img src="{% static 'images/kantara.avif'%}" alt="Poster">
-                        <p class="title">Kantara</p>
-                        <p class="genre">Adventure/Drama/Thriller</p>
+                            <img src="{% static 'images/kantara.avif'%}" alt="Poster">
+                            <p class="title">Kantara</p>
+                            <p class="genre">Adventure/Drama/Thriller</p>
                         </a>
                     </div>
                     <div class="card">

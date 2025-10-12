@@ -10,6 +10,11 @@
 
 </head>
 <body>
+    <div class="logout-button-container">
+        <a href="{% url 'admin_logout' %}" class="admin-logout-button">
+            &larr; Logout
+        </a>
+    </div>
     <div class="container">
         <h1>🎬 Admin Dashboard</h1>
 
@@ -42,9 +47,6 @@
             <a href="{% url 'view_movies' %}" class="btn">📚 View Movies</a>
             <a href="{% url 'add_castcrew' %}" class="btn">👥 Add Cast & Crew</a>
             <a href="{% url 'view_reviews' %}" class="btn">💬 View Reviews</a>
-        </div>
-        <div class="logout">
-            <a href="{% url 'admin_logout' %}">Logout admin</a>
         </div>
     </div>
 </body>

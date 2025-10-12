@@ -11,7 +11,7 @@
 <body>
     <div class="login-container">
         <h2>🔒 Admin Login</h2>
-        <form method="post">
+        <form method="post" >
             {% csrf_token %}
             {% for message in messages %}
             <p class="error">{{ message }}</p>

@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'), 
     
-    
     #for admin
     
     path('admin-login/', views.admin_login, name='admin_login'),
@@ -15,4 +14,10 @@ urlpatterns = [
     path('admin-panel/add-castcrew/', views.add_castcrew, name='add_castcrew'),
     path('admin-panel/view-reviews/', views.view_reviews, name='view_reviews'),
     path('admin-panel/movie-detail/<int:movie_id>/',views.movie_detail,name='movie_details'),
+
+    #for users 
+
+    path('user-register/',views.user_register,name='user_register'),
+    path('user-login/',views.user_login,name='user_login'),
+    path('user-logout/',views.user_logout,name='user_logout'),
 ]

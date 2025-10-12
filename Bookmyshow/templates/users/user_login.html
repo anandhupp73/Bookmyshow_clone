@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'userscss/login.css' %}">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <span>book<span style="color:#1E1E1E;">my</span>show</span>
+        </div>
+        <form action="{% url 'user_login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="username" name="username" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button class="login-btn" type="submit">Login</button>
+            <div class="divider">or</div>
+
+            <div class="social-btn">
+                <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google">
+                Continue with Google
+            </div>
+
+            <div class="signup-text">
+                New to BookMyShow? <a href="#">Sign up</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>
