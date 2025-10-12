@@ -1,0 +1,129 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}{{ movie.title }} - Movie Booking{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'userscss/moviebooking.css' %}">
+
+<div class="movie-hero-container" style="background-image: url('{{ movie.cover_image.url }}');">
+    <div class="movie-hero-overlay">
+        <div class="movie-details-content">
+            
+            <div class="poster-section">
+                <img src="{{ movie.main_image.url }}" alt="{{ movie.title }} Poster">
+                {% comment %} <div class="in-cinemas-tag">In cinemas</div> {% endcomment %}
+            </div>
+
+            <div class="info-section">
+                <h1>{{ movie.title }}</h1>
+                
+                <div class="rating-section">
+                    <i class="fa-solid fa-star"></i>
+                    <span class="rating-score">{{ avg_rating|default:0|floatformat:1 }}/10</span>
+                    <span class="rating-votes">({{ total_votes }} Votes)</span>
+                </div>
+
+                <div class="rate-card">
+                    <div>
+                        <h4>Add your rating & review</h4>
+                        <p>Your ratings matter</p>
+                    </div>
+                    <a href="{% url 'add_review' movie.id %}">
+                        <button class="rate-now-btn">Rate now</button>
+                    </a>
+                </div>
+                
+                <div class="formats-languages">
+                    {% comment %} <div class="formats">
+                        {% for format in movie.formats %}
+                            <span>{{ format }}</span>
+                        {% endfor %}
+                    </div> {% endcomment %}
+                    <div class="languages">
+                         {% for language in movie.languages %}
+                            <span>{{ language }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="metadata">
+                    <span>{{ movie.duration }}</span> &bull;
+                    <span>{{ movie.genre }}</span> &bull;
+                    {% comment %} <span>{{ movie.certification }}</span> &bull; {% endcomment %}
+                    <span>{{ movie.release_date|date:"j M, Y" }}</span>
+                </div>
+
+                <a href="#" class="book-tickets-btn">Book tickets</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="about-movie-section">
+    <h2>About the movie</h2>
+    <p>{{ movie.description }}</p>
+</div>
+<div class="cast-and-reviews-container">
+    
+    <div class="crew-section">
+        <h2>Crew</h2>
+        <div class="carousel-container">
+            <div class="crew-carousel">
+                {% for member in movie.castcrew.all %}
+                <div class="crew-member">
+                    <img src="{{ member.profile_image.url }}" alt="{{ member.name }}">
+                    <p class="crew-name">{{ member.name }}</p>
+                    <p class="crew-role">{{ member.role }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="carousel-arrow right-arrow">&rsaquo;</div>
+        </div>
+    </div>
+
+    <div class="reviews-section">
+        <div class="reviews-header">
+            <h2>Top reviews</h2>
+            <a href="#" class="all-reviews-link">{{ movie.reviews.count }} reviews &rsaquo;</a>
+        </div>
+        <p class="reviews-summary">Summary of {{ movie.reviews.count }} reviews.</p>
+        
+        <div class="review-tags">
+            <div class="tag">#SuperDirection<span>153198</span></div>
+            <div class="tag">#GreatActing<span>143681</span></div>
+            <div class="tag">#Blockbuster<span>127022</span></div>
+            <div class="tag">#AwesomeStory<span>107362</span></div>
+        </div>
+
+        <div class="carousel-container">
+            <div class="reviews-carousel">
+                {% for review in movie.reviews.all %}
+                <div class="review-card">
+                    <div class="review-card-header">
+                        <div class="user-info">
+                            <i class="fa-regular fa-circle-user"></i>
+                            <span>{{ review.user_name }}</span>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fa-solid fa-star"></i> {{ review.rating }}/10
+                        </div>
+                    </div>
+                     <p class="review-comment">
+                       {{ review.comment|truncatewords:25 }}
+                       {% if review.comment|wordcount > 25 %}
+                           <a href="#" class="more-link">...more</a>
+                       {% endif %}
+                    </p>
+                </div>
+                {% empty %}
+                <p>No reviews yet.</p>
+                {% endfor %}
+            </div>
+            <div class="carousel-arrow right-arrow">&rsaquo;</div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

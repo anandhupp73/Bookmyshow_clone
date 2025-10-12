@@ -5,14 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import user_passes_test,login_required
 from functools import wraps
+from django.db.models import Avg, Count
 
 # Create your views here.
 
 def home(request):
-    return render(request,'home.html')
-
-def movies(request):
-    return render(request,'movie.html')
+    movies = Movie.objects.all()
+    return render(request,'home.html',{'movies':movies})
 
 def admin_login(request):
     if request.method == 'POST':
@@ -124,7 +123,7 @@ def add_castcrew(request):
 
 @admin_required
 def view_reviews(request):
-    reviews = Review.objects.all().select_related('movie')
+    reviews = Review.objects.all().select_related('movie').order_by('-created_at')
     return render(request, 'adminpanel/view_reviews.html', {'reviews': reviews})
 
 
@@ -163,3 +162,31 @@ def user_logout(request):
     if 'is_user_logged_in' in request.session:
         del request.session['is_user_logged_in']
     return redirect('home')
+
+def movie_booking(request,id):
+    movie = get_object_or_404(Movie, id=id)
+    reviews = movie.reviews.all().order_by('-created_at')
+    rating_info = movie.reviews.aggregate(avg_rating=Avg('rating'), total_votes=Count('id'))
+
+    return render(request,'users/movie_booking.html',{'movie':movie,'reviews':reviews,'avg_rating': rating_info['avg_rating'],
+        'total_votes': rating_info['total_votes'],})
+
+def add_review(request,id):
+    movie = get_object_or_404(Movie, id=id)
+
+    if request.method == 'POST':
+        user_name = request.POST.get('user_name')
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+
+        Review.objects.create(
+            movie=movie,
+            user_name=user_name,
+            rating=rating,
+            comment=comment
+        )
+
+        return redirect('movie_booking',id=movie.id) 
+
+
+    return render(request,'users/add_review.html',{'movie':movie})

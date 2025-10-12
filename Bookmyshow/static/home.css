@@ -157,7 +157,7 @@ header{
 
 .cards-container {
     display: flex;
-    justify-content: space-between; 
+    justify-content: flex-start; 
     gap: 20px;            
     /* background-color: #e73355;       */
     padding-bottom: 20px;

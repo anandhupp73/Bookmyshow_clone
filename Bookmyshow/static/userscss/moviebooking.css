@@ -1,0 +1,418 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Main Hero Container for the movie details */
+.movie-hero-container {
+    width: 100%;
+    padding-top: 110px;
+    min-height: 550px;
+    background-size: cover;
+    background-position: center top;
+    position: relative;
+    color: white;
+}
+
+/* Dark overlay with blur effect */
+.movie-hero-overlay {
+    background: linear-gradient(90deg, #1A1A1A 24.97%, #1A1A1A 38.3%, rgba(26, 26, 26, 0.0409746) 97.47%, #1A1A1A 100%);
+    width: 100%;
+    height: 100%;
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Centered content wrapper */
+.movie-details-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1200px;
+    width: 90%;
+    padding: 40px 0;
+}
+
+/* Left Section: Poster */
+.poster-section {
+    flex: 0 0 300px; /* Fixed width for the poster */
+    position: relative;
+}
+
+.poster-section img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.in-cinemas-tag {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    color: #000;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+/* Right Section: Information */
+.info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; 
+}
+
+.info-section h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.rating-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.rating-section .fa-star {
+    color: #f84464;
+    font-size: 28px;
+}
+
+.rating-section .rating-score {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.rating-votes {
+    color: #ccc;
+}
+
+.rate-card {
+    background-color: #333;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 400px;
+}
+.rate-card h4{
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+.rate-card p{
+    color: #ccc;
+    font-size: 14px;
+}
+
+.rate-now-btn {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.rate-now-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.formats-languages .formats,
+.formats-languages .languages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.formats-languages span {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.metadata {
+    font-size: 16px;
+    color: #eee;
+}
+
+.book-tickets-btn {
+    background-color: #f84464;
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    max-width: 250px;
+    transition: background-color 0.3s;
+}
+
+.book-tickets-btn:hover {
+    background-color: #d83151;
+}
+
+/* About Movie Section */
+.about-movie-section {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    color: #333;
+}
+
+.about-movie-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-left: 5px solid #f84464;
+    padding-left: 10px;
+}
+
+.about-movie-section p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Main Container for Cast & Reviews */
+.cast-and-reviews-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* General Section Heading */
+.cast-and-reviews-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Carousel container for positioning arrows */
+.carousel-container {
+    position: relative;
+}
+
+/* Carousel Arrow Styling */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #666;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+.right-arrow {
+    right: -20px;
+}
+
+/* Hiding default scrollbars */
+.crew-carousel::-webkit-scrollbar,
+.reviews-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Crew Section Styling */
+.crew-section {
+    margin-bottom: 50px;
+}
+
+.crew-carousel {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    padding-bottom: 15px; /* for shadow visibility */
+    scroll-behavior: smooth;
+}
+
+.crew-member {
+    flex: 0 0 120px;
+    text-align: center;
+}
+
+.crew-member img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.crew-member .crew-name {
+    font-weight: 600;
+    margin: 0;
+}
+
+.crew-member .crew-role {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Reviews Section Styling */
+.reviews-section {
+    margin-bottom: 50px;
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.all-reviews-link {
+    color: #f84464;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.reviews-summary {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.review-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.tag {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #f84464;
+    cursor: pointer;
+}
+
+.tag span {
+    color: #999;
+    margin-left: 8px;
+}
+
+.reviews-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    scroll-behavior: smooth;
+}
+
+.review-card {
+    flex: 0 0 48%; /* Show two cards at a time, with some gap */
+    min-width: 350px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+.user-info .fa-circle-user{
+    font-size: 24px;
+    color: #ccc;
+}
+
+
+.review-rating {
+    font-weight: bold;
+}
+.review-rating .fa-star{
+    color: #f84464;
+}
+
+.review-comment {
+    color: #333;
+    line-height: 1.5;
+}
+
+.more-link {
+    color: #666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 820px) {
+    .review-card {
+        flex: 0 0 80%;
+        min-width: 300px;
+    }
+    .carousel-arrow {
+        display: none; /* Hide arrows on mobile as swiping is more natural */
+    }
+}
+/* Responsive Design */
+@media (max-width: 820px) {
+    .movie-details-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .info-section {
+        align-items: center;
+    }
+    .poster-section {
+        margin-bottom: 20px;
+    }
+    .info-section h1 {
+        font-size: 32px;
+    }
+    .rate-card {
+       flex-direction: column;
+       gap: 15px;
+       padding: 20px;
+    }
+    .formats-languages .formats,
+    .formats-languages .languages {
+        justify-content: center;
+    }
+    .movie-hero-overlay{
+        background: rgba(26, 26, 26, 0.9);
+    }
+}

@@ -29,15 +29,15 @@
                     </div>
                     <div class="signin-btn">
                         {% if request.user.is_authenticated %}
-                            {% if request.session.is_user_logged_in %}
-                                <button onclick="window.location.href='{% url 'user_logout' %}'">
-                                    Logout ({{ request.user.username }})
-                                </button>
-                            {% else %}
-                                <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
-                            {% endif %}
+                        {% if request.session.is_user_logged_in %}
+                        <button onclick="window.location.href='{% url 'user_logout' %}'">
+                            Logout ({{ request.user.username }})
+                        </button>
                         {% else %}
-                            <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
+                        <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
+                        {% endif %}
+                        {% else %}
+                        <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
                         {% endif %}
                     </div>
                     <div class="menu">
@@ -82,33 +82,21 @@
                 </div>
 
                 <div class="cards-container">
+                    {% for movie in movies %}
                     <div class="card">
-                        <a href="../movies/">
-                            <img src="{% static 'images/kantara.avif'%}" alt="Poster">
-                            <p class="title">Kantara</p>
-                            <p class="genre">Adventure/Drama/Thriller</p>
+                        <a href="{% url 'movie_booking' movie.id %}">
+                            {% if movie.main_image %}
+                            <img src="{{ movie.main_image.url }}" alt="{{ movie.title }}">
+                            {% else %}
+                            <img src="{% static 'images/default-movie.jpg' %}" alt="{{ movie.title }}">
+                            {% endif %}
+                            <p class="title">{{ movie.title }}</p>
+                            <p class="genre">{{ movie.genre }}</p>
                         </a>
                     </div>
-                    <div class="card">
-                        <img src="{% static 'images/lokah.avif'%}" alt="Poster">
-                        <p class="title">Lokah</p>
-                        <p class="genre">Action/Comedy/Fantasy</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/karam.avif'%}" alt="Poster">
-                        <p class="title">Karam</p>
-                        <p class="genre">Action/Thriller</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/demonslayer.avif'%}" alt="Poster">
-                        <p class="title">Demonslayer</p>
-                        <p class="genre">Action/Adventure/Anime</p>
-                    </div>
-                    <div class="card">
-                        <img src="{% static 'images/balti.avif'%}" alt="Poster">
-                        <p class="title">Balti</p>
-                        <p class="genre">Action/Sports/Thriller</p>
-                    </div>
+                    {% empty %}
+                    <p>No movies available right now.</p>
+                    {% endfor %}
                 </div>
             </div>
             <div class="ad-container2">

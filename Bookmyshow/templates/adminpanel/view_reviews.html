@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Reviews</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/viewreviews.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <h1>All Reviews</h1>
+
+    {% if reviews %}
+    <table>
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Reviewer</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Submitted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}
+            <tr>
+                <td>{{ review.movie.title }}</td>
+                <td>{{ review.user_name }}</td>
+                <td>
+                    <span class="rating-stars">
+                        {% for i in "12345678910"|make_list %}
+                        {% if forloop.counter <= review.rating %} <i class="fa-solid fa-star" style="color: #f5b50a;">
+                            </i>
+                            {% else %}
+                            <i class="fa-regular fa-star" style="color: #ccc;"></i>
+                            {% endif %}
+                            {% endfor %}
+                            ({{ review.rating }}/10)
+                    </span>
+                </td>
+                <td>{{ review.comment }}</td>
+                <td>{{ review.created_at|date:"d M Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No reviews available.</p>
+    {% endif %}
+</body>
+
+</html>

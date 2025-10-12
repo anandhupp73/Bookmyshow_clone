@@ -1,0 +1,115 @@
+.review-form-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px;
+    padding-top: 130px; /* Pushes content below the fixed header */
+    padding-bottom: 60px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    /* Uncomment below for a card-like look */
+    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
+}
+
+/* Header section with movie title */
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h3 {
+    color: #555;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.form-header h1 {
+    color: #1a1a1a;
+    font-size: 2.2em;
+    margin: 0;
+}
+
+/* General styling for each form group (label + input) */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Interactive Star Rating Styling */
+.rating-stars-container {
+    display: flex;
+    flex-direction: row-reverse; /* This is key for the hover effect */
+    justify-content: center;
+}
+
+.rating-stars-container input[type="radio"] {
+    display: none; /* Hide the actual radio buttons */
+}
+
+.rating-stars-container label {
+    font-size: 40px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+/* The magic: Sibling selectors for hover and checked states */
+.rating-stars-container label:hover,
+.rating-stars-container label:hover ~ label,
+.rating-stars-container input[type="radio"]:checked ~ label {
+    color: #f8c102; /* Gold color for selected/hovered stars */
+}
+
+/* Textarea for the review comment */
+#comment-box {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    resize: vertical; /* Allow user to resize vertically */
+    min-height: 120px;
+}
+
+/* Character counter styling */
+.char-counter {
+    text-align: right;
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* User name input box */
+#user-name {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+
+/* Submit button styling */
+.submit-review-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #f84464;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-review-btn:hover {
+    background-color: #d83151;
+}

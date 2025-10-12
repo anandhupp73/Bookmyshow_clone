@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'userscss/review.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="review-form-container">
+        <div class="form-header">
+            <h3>Add your rating & review for</h3>
+            <h1>{{ movie.title }}</h1>
+        </div>
+
+        <form method="post" class="review-form" action="{% url 'add_review' movie.id %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Your Rating</label>
+                <div class="rating-stars-container">
+                    <input type="radio" id="star10" name="rating" value="10" required><label for="star10"
+                        title="10/10">&#9733;</label>
+                    <input type="radio" id="star9" name="rating" value="9"><label for="star9"
+                        title="9/10">&#9733;</label>
+                    <input type="radio" id="star8" name="rating" value="8"><label for="star8"
+                        title="8/10">&#9733;</label>
+                    <input type="radio" id="star7" name="rating" value="7"><label for="star7"
+                        title="7/10">&#9733;</label>
+                    <input type="radio" id="star6" name="rating" value="6"><label for="star6"
+                        title="6/10">&#9733;</label>
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5"
+                        title="5/10">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4"
+                        title="4/10">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3"
+                        title="3/10">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2"
+                        title="2/10">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1"
+                        title="1/10">&#9733;</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comment-box">Your Review</label>
+                <textarea id="comment-box" name="comment" rows="6"
+                    placeholder="Share your experience... What did you like or dislike?" maxlength="1000"
+                    required></textarea>
+                <div id="char-counter" class="char-counter">0/1000</div>
+            </div>
+
+            <div class="form-group">
+                <label for="user-name">Your Name</label>
+                <input type="text" id="user-name" name="user_name" placeholder="Enter your name" required>
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="submit-review-btn">Submit Review</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
