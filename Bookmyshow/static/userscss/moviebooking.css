@@ -165,6 +165,32 @@
     background-color: #d83151;
 }
 
+/* wishlist */
+.wishlist-btn {
+    background-color: white;
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color:black;
+    margin-top: 10px;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+/* .wishlist-btn:hover {
+    text-decoration: underline;
+} */
+.wishlist-a{
+    color:white;
+    font-size: 15px;
+    padding: 10px;
+    border: 1px solid white;
+    background: rgb(214, 36, 36);
+    border-radius: 6px;
+    text-decoration: none;
+}
+
 /* About Movie Section */
 .about-movie-section {
     max-width: 1100px;

@@ -1,0 +1,16 @@
+{% extends "home.html" %}
+
+{% block content %}
+<h1>Booking Confirmed</h1>
+<p>Movie: {{ booking.show.movie.title }}</p>
+<p>Show Date: {{ booking.show.show_date }}</p>
+<p>Show Time: {{ booking.show.show_time }}</p>
+<p>Seats Booked:</p>
+<ul>
+    {% for seat in booking.seats.all %}
+        <li>{{ seat.seat_number }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

@@ -84,6 +84,19 @@ header{
     background-color: #e73355;
 }
 
+.nav_wishlist{
+    /* border: 1px solid black; */
+    border: none;
+    border-radius: 6px;
+    background: rgb(223, 28, 28);
+    padding: 5px;
+}
+.nav_wishlist a{
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+}
 .menu i {
     font-size: 20px;
     cursor: pointer;

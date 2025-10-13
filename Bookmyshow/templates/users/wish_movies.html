@@ -1,0 +1,60 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}My Wishlist{% endblock %}
+
+{% block content %}
+<style>
+.wrap{
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+    display: flex;
+}
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 100px;
+    padding-bottom: 10px;
+    width: 80%;
+    justify-content:flex-start;
+}
+
+.movie-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 180px;
+    text-align: center;
+    border-radius: 5px;
+}
+footer{
+    margin-top: 40px;
+}
+
+</style>
+<!-- <h1>My Wishlist</h1> -->
+<div class="wrap">
+{% if movies %}
+    <div class="movies-list">
+        {% for movie in movies %}
+            <div class="movie-card">
+                <a href="{% url 'movie_booking' movie.id %}">
+                    {% if movie.main_image %}
+                        <img src="{{ movie.main_image.url }}" alt="{{ movie.title }}" style="width:150px; height:auto;">
+                    {% else %}
+                        <img src="{% static 'default_movie_image.jpg' %}" alt="No image" style="width:150px; height:auto;">
+                    {% endif %}
+                    <h3>{{ movie.title }}</h3>
+                </a>
+                <p>Genre: {{ movie.genre }}</p>
+                <p>Release Date: {{ movie.release_date|date:"j M, Y" }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p style="background-color: red;">You have no movies in your wishlist.</p>
+{% endif %}
+
+</div>
+{% endblock %}

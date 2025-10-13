@@ -16,7 +16,9 @@
             <div class="nav1">
                 <div class="left-section">
                     <div class="logo">
-                        <img src="{% static 'images/bmslogo.png' %}" alt="">
+                       <a href="{% url 'home' %}"> 
+                            <img src="{% static 'images/bmslogo.png' %}" alt="BOOKMYSHOW">
+                       </a>
                     </div>
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -39,6 +41,12 @@
                         {% else %}
                         <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
                         {% endif %}
+                    </div>
+                    <div class="nav_wishlist">
+                        <a href="{% url 'user_wishlist'%}">
+                            <i class="fa-regular fa-heart"></i>
+                            Wishlist
+                        </a>
                     </div>
                     <div class="menu">
                         <i class="fa-solid fa-bars"></i>

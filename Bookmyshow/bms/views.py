@@ -6,6 +6,7 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import user_passes_test,login_required
 from functools import wraps
 from django.db.models import Avg, Count
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 
@@ -167,9 +168,13 @@ def movie_booking(request,id):
     movie = get_object_or_404(Movie, id=id)
     reviews = movie.reviews.all().order_by('-created_at')
     rating_info = movie.reviews.aggregate(avg_rating=Avg('rating'), total_votes=Count('id'))
+    
+    is_wishlisted = False
+    if request.user.is_authenticated:
+        is_wishlisted = Wishlist.objects.filter(user=request.user, movie=movie).exists()
 
     return render(request,'users/movie_booking.html',{'movie':movie,'reviews':reviews,'avg_rating': rating_info['avg_rating'],
-        'total_votes': rating_info['total_votes'],})
+        'total_votes': rating_info['total_votes'],'is_wishlisted': is_wishlisted,})
 
 def add_review(request,id):
     movie = get_object_or_404(Movie, id=id)
@@ -190,3 +195,68 @@ def add_review(request,id):
 
 
     return render(request,'users/add_review.html',{'movie':movie})
+
+
+@login_required
+def toggle_wishlist(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, movie=movie)
+
+    if not created:
+        # Already exists, so remove it
+        wishlist_item.delete()
+        messages.success(request, "Removed from your wishlist.")
+    else:
+        messages.success(request, "Added to your wishlist.")
+
+    return redirect('movie_booking', id=movie.id)
+
+
+@login_required
+def user_wishlist(request):
+    wishlist_items = request.user.wishlist.select_related('movie').all()
+    # Extract movies from wishlist entries
+    movies = [item.movie for item in wishlist_items]
+    print(movies)
+    return render(request, 'users/wish_movies.html', {'movies': movies})
+
+#creating seats for booking
+def create_seats_for_show(show, rows=5, seats_per_row=10):
+    for row in range(rows):
+        for seat_num in range(1, seats_per_row + 1):
+            seat_label = f"{chr(65+row)}{seat_num}"  # e.g., "A1", "B2"
+            Seat.objects.create(show=show, seat_number=seat_label)
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def book_seats(request, show_id):
+    show = get_object_or_404(Show, id=show_id)
+    seats = show.seats.all().order_by('seat_number')
+
+    if request.method == 'POST':
+        selected_seat_ids = request.POST.getlist('seats')  # list of seat IDs selected by user
+
+        # Check if any of selected seats are already booked
+        already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
+        if already_booked.exists():
+            messages.error(request, "Some selected seats are already booked. Please choose different seats.")
+            return redirect('book_seats', show_id=show.id)
+
+        # Mark seats as booked
+        seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
+        seats_to_book.update(is_booked=True)
+
+        # Create booking
+        booking = Booking.objects.create(user=request.user, show=show)
+        booking.seats.set(seats_to_book)
+        booking.save()
+
+        messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
+        return redirect('booking_confirmation', booking_id=booking.id)
+
+    return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
+
+@login_required
+def booking_confirmation(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    return render(request, 'users/booking_conform.html', {'booking': booking})

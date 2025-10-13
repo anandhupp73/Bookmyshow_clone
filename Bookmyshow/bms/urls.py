@@ -22,4 +22,10 @@ urlpatterns = [
     path('user-logout/',views.user_logout,name='user_logout'),
     path('movie-booking/<int:id>/',views.movie_booking,name='movie_booking'),
     path('add-review/<int:id>/',views.add_review,name='add_review'),
+    path('wishlist/toggle/<int:movie_id>/', views.toggle_wishlist, name='toggle_wishlist'),
+    path('my-wishlist/', views.user_wishlist, name='user_wishlist'),
+    path('book-seats/<int:show_id>/', views.book_seats, name='book_seats'),
+    path('booking-confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),
+
+
 ]

@@ -1,0 +1,49 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}Select Seats - {{ show.movie.title }}{% endblock %}
+
+{% block content %}
+<h1>Select Seats for {{ show.movie.title }} ({{ show.show_date }} at {{ show.show_time }})</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="seats-container">
+        {% for seat in seats %}
+            <label class="seat {% if seat.is_booked %}booked{% endif %}">
+                <input type="checkbox" name="seats" value="{{ seat.id }}" {% if seat.is_booked %}disabled{% endif %}>
+                {{ seat.seat_number }}
+            </label>
+            {% if forloop.counter|divisibleby:10 %}<br>{% endif %}
+        {% endfor %}
+    </div>
+
+    <button type="submit">Book Selected Seats</button>
+</form>
+
+<style>
+.seats-container {
+    max-width: 600px;
+}
+.seat {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px;
+    border: 1px solid #333;
+    cursor: pointer;
+    user-select: none;
+}
+.seat.booked {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #888;
+}
+.seat input[type="checkbox"] {
+    display: none;
+}
+.seat input[type="checkbox"]:checked + span {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+{% endblock %}
