@@ -221,40 +221,43 @@ def user_wishlist(request):
     return render(request, 'users/wish_movies.html', {'movies': movies})
 
 #creating seats for booking
-def create_seats_for_show(show, rows=5, seats_per_row=10):
+
+def create_seats_for_movie(movie, rows=5, seats_per_row=10):
     for row in range(rows):
         for seat_num in range(1, seats_per_row + 1):
-            seat_label = f"{chr(65+row)}{seat_num}"  # e.g., "A1", "B2"
-            Seat.objects.create(show=show, seat_number=seat_label)
+            seat_label = f"{chr(65 + row)}{seat_num}"  # e.g., A1, B2
+            Seat.objects.create(movie=movie, seat_number=seat_label)
 
 @login_required
-@require_http_methods(["GET", "POST"])
-def book_seats(request, show_id):
-    show = get_object_or_404(Show, id=show_id)
-    seats = show.seats.all().order_by('seat_number')
+# @require_http_methods(["GET", "POST"])
+def book_seats(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    # Create seats automatically if none exist
+    if not movie.seats.exists():
+        create_seats_for_movie(movie, rows=5, seats_per_row=10)
+
+    seats = movie.seats.all().order_by('seat_number')
 
     if request.method == 'POST':
-        selected_seat_ids = request.POST.getlist('seats')  # list of seat IDs selected by user
+        selected_seat_ids = request.POST.getlist('seats')
 
-        # Check if any of selected seats are already booked
         already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
         if already_booked.exists():
             messages.error(request, "Some selected seats are already booked. Please choose different seats.")
-            return redirect('book_seats', show_id=show.id)
+            return redirect('book_seats', movie_id=movie.id)
 
-        # Mark seats as booked
         seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
         seats_to_book.update(is_booked=True)
 
-        # Create booking
-        booking = Booking.objects.create(user=request.user, show=show)
+        booking = Booking.objects.create(user=request.user, movie=movie)
         booking.seats.set(seats_to_book)
         booking.save()
 
         messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
         return redirect('booking_confirmation', booking_id=booking.id)
 
-    return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
+    return render(request, 'users/book_seats.html', {'movie': movie, 'seats': seats})
 
 @login_required
 def booking_confirmation(request, booking_id):

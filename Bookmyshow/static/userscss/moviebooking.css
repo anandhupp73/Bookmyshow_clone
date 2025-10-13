@@ -3,7 +3,8 @@
 /* Main Hero Container for the movie details */
 .movie-hero-container {
     width: 100%;
-    padding-top: 110px;
+    /* padding-top: 91px; */
+    margin-top: 90px;
     min-height: 550px;
     background-size: cover;
     background-position: center top;
