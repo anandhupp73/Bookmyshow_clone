@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
-    <link rel="  <meta charset="UTF-8">
-    stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    {% block extra_head %}{% endblock %} 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    {% block extra_head %}{% endblock %}
     <title>{% block title %}Home Page{% endblock %}</title>
 </head>
 
@@ -17,13 +19,13 @@
             <div class="nav1">
                 <div class="left-section">
                     <div class="logo">
-                       <a href="{% url 'home' %}"> 
+                        <a href="{% url 'home' %}">
                             <img src="{% static 'images/bmslogo.png' %}" alt="BOOKMYSHOW">
-                       </a>
+                        </a>
                     </div>
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" class="search-input">
+                        <input type="text" class="search-input"  placeholder="Search for Movies, Events, Plays, Sports and Activities">
                     </div>
                 </div>
                 <div class="right-section">
@@ -75,11 +77,32 @@
             {% block content %}
             <!-- space-for-template-inheritance -->
             <div class="whitepart"></div>
-            <div class="ad-container">
+            {% comment %} <div class="ad-container">
                 <div class="ad-card">
                     <img src="{% static 'images/ad1.avif' %}" alt="Ad">
                 </div>
+            </div> {% endcomment %}
+            <div class="ad-container">
+                <div class="carousel-container">
+                    <div class="carousel-slide" id="carousel-slide">
+                        <img src="{% static 'images/ad1.avif' %}" alt="Ad 1">
+                        <img src="{% static 'images/ad2.avif' %}" alt="Ad 2">
+                        <img src="{% static 'images/ad3.avif' %}" alt="Ad 3">
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button class="prev" onclick="prevSlide()">❮</button>
+                    <button class="next" onclick="nextSlide()">❯</button>
+
+                    <!-- Dots -->
+                    <div class="dots" id="dots">
+                        <span class="dot active" onclick="goToSlide(0)"></span>
+                        <span class="dot" onclick="goToSlide(1)"></span>
+                        <span class="dot" onclick="goToSlide(2)"></span>
+                    </div>
+                </div>
             </div>
+
             <div class="moviecards">
                 <div class="head">
                     <div class="left">
@@ -488,6 +511,41 @@
         </footer>
 
     </div>
+    <script>
+        const slideContainer = document.getElementById('carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slideContainer.children.length;
+
+        let currentIndex = 0;
+        let interval = setInterval(nextSlide, 2000); // Auto slide every 2s
+
+        function updateCarousel() {
+            slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        // Pause on hover
+        const carousel = document.querySelector('.carousel-container');
+        carousel.addEventListener('mouseenter', () => clearInterval(interval));
+        carousel.addEventListener('mouseleave', () => interval = setInterval(nextSlide, 2000));
+    </script>
+
 </body>
 
 </html>
