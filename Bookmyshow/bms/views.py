@@ -175,6 +175,7 @@ def movie_booking(request,id):
 
     return render(request,'users/movie_booking.html',{'movie':movie,'reviews':reviews,'avg_rating': rating_info['avg_rating'],
         'total_votes': rating_info['total_votes'],'is_wishlisted': is_wishlisted,})
+    
 
 def add_review(request,id):
     movie = get_object_or_404(Movie, id=id)
