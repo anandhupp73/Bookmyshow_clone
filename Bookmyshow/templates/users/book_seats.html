@@ -128,4 +128,28 @@
 }
 
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const bookButton = document.querySelector(".book-button");
+
+        form.addEventListener("submit", function (event) {
+            // Get all selected checkboxes
+            const selectedSeats = form.querySelectorAll("input[type='checkbox']:checked");
+
+            if (selectedSeats.length === 0) {
+                alert("Please select at least one seat to proceed.");
+                event.preventDefault(); // Stop form submission
+                return;
+            }
+
+            const confirmBooking = confirm(`You have selected ${selectedSeats.length} seat(s).\nDo you want to confirm the booking?`);
+
+            if (!confirmBooking) {
+                event.preventDefault(); // Stop form submission
+            }
+        });
+    });
+</script>
+
 {% endblock %}
