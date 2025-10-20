@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uesr Register</title>
+    <title>User Register</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'userscss/reg.css' %}">
 </head>
@@ -15,15 +15,27 @@
             <span>book</span><span style="color:#1E1E1E;">my</span><span>show</span>
         </div>
         <h2>Create Account</h2>
-        <form method="POST" action="{% url 'user_register' %}">
+
+        <!-- Registration Form -->
+        <form method="POST" action="{% url 'account_signup' %}">
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="password1" placeholder="Password" required>
+            <input type="password" name="password2" placeholder="Confirm Password" required>
             <button type="submit" class="register-btn">Register</button>
         </form>
+
+        <div class="divider">or</div>
+
+        <!-- Google Registration/Login -->
+        <a class="social-btn google-btn" href="{% provider_login_url 'google' process='signup' %}">
+            <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google">
+            Continue with Google
+        </a>
+
         <div class="login-text">
-            Already have an account? <a href="{% url 'user_login' %}">Login</a>
+            Already have an account? <a href="{% url 'account_login' %}">Login</a>
         </div>
     </div>
 </body>

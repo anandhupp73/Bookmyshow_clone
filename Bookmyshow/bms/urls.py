@@ -17,9 +17,9 @@ urlpatterns = [
 
     #for users 
 
-    path('user-register/',views.user_register,name='user_register'),
-    path('user-login/',views.user_login,name='user_login'),
-    path('user-logout/',views.user_logout,name='user_logout'),
+    # path('user-register/',views.user_register,name='user_register'),
+    # path('user-login/',views.user_login,name='user_login'),
+    # path('user-logout/',views.user_logout,name='user_logout'),
     path('movie-booking/<int:id>/',views.movie_booking,name='movie_booking'),
     path('add-review/<int:id>/',views.add_review,name='add_review'),
     path('wishlist/toggle/<int:movie_id>/', views.toggle_wishlist, name='toggle_wishlist'),

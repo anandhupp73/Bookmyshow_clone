@@ -25,7 +25,8 @@
                     </div>
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" class="search-input"  placeholder="Search for Movies, Events, Plays, Sports and Activities">
+                        <input type="text" class="search-input"
+                            placeholder="Search for Movies, Events, Plays, Sports and Activities">
                     </div>
                 </div>
                 <div class="right-section">
@@ -34,15 +35,13 @@
                     </div>
                     <div class="signin-btn">
                         {% if request.user.is_authenticated %}
-                        {% if request.session.is_user_logged_in %}
-                        <button onclick="window.location.href='{% url 'user_logout' %}'">
+                        <button onclick="window.location.href='{% url 'account_logout' %}'">
                             Logout ({{ request.user.username }})
                         </button>
                         {% else %}
-                        <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
-                        {% endif %}
-                        {% else %}
-                        <button onclick="window.location.href='{% url 'user_login' %}'">Sign in</button>
+                        <button onclick="window.location.href='{% url 'account_login' %}'">
+                            Sign in
+                        </button>
                         {% endif %}
                     </div>
                     <div class="nav_wishlist">

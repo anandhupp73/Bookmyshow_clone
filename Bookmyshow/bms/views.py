@@ -130,39 +130,39 @@ def view_reviews(request):
 
 # ======== USER SECTION ========
 
-def user_register(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
+# def user_register(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         email = request.POST['email']
+#         password = request.POST['password']
         
-        if User.objects.filter(username=username).exists():
-            return render(request, 'register.html', {'error': 'Username already taken'})
+#         if User.objects.filter(username=username).exists():
+#             return render(request, 'register.html', {'error': 'Username already taken'})
         
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
-        return redirect('user_login')
+#         user = User.objects.create_user(username=username, email=email, password=password)
+#         user.save()
+#         return redirect('user_login')
     
-    return render(request, 'users/user_register.html')
+#     return render(request, 'users/user_register.html')
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            request.session['is_user_logged_in'] = True
-            return redirect('home')
-        else:
-            return render(request, 'users/user_login.html', {'error': 'Invalid credentials'})
-    return render(request,'users/user_login.html')
+# def user_login(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             request.session['is_user_logged_in'] = True
+#             return redirect('home')
+#         else:
+#             return render(request, 'users/user_login.html', {'error': 'Invalid credentials'})
+#     return render(request,'users/user_login.html')
 
 
-def user_logout(request):
-    if 'is_user_logged_in' in request.session:
-        del request.session['is_user_logged_in']
-    return redirect('home')
+# def user_logout(request):
+#     if 'is_user_logged_in' in request.session:
+#         del request.session['is_user_logged_in']
+#     return redirect('home')
 
 def movie_booking(request,id):
     movie = get_object_or_404(Movie, id=id)
@@ -176,7 +176,7 @@ def movie_booking(request,id):
     return render(request,'users/movie_booking.html',{'movie':movie,'reviews':reviews,'avg_rating': rating_info['avg_rating'],
         'total_votes': rating_info['total_votes'],'is_wishlisted': is_wishlisted,})
     
-
+@login_required
 def add_review(request,id):
     movie = get_object_or_404(Movie, id=id)
 

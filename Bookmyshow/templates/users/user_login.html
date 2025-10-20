@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Login</title>
     {% load static %}
+    {% load socialaccount %}
     <link rel="stylesheet" href="{% static 'userscss/login.css' %}">
 </head>
 
@@ -12,24 +15,47 @@
         <div class="logo">
             <span>book<span style="color:#1E1E1E;">my</span>show</span>
         </div>
-        <form action="{% url 'user_login' %}" method="post">
-            {% csrf_token %}
-            <input type="text" placeholder="username" name="username" required>
-            <input type="password" placeholder="Password" name="password" required>
-            <button class="login-btn" type="submit">Login</button>
-            <div class="divider">or</div>
 
-            <div class="social-btn">
-                <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google">
-                Continue with Google
+        <!-- Login form -->
+        <form action="{% url 'account_login' %}" method="post">
+            {% csrf_token %}
+
+            <!-- Show error messages if login fails -->
+            {% if form.errors %}
+            <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <p style="color: red; font-size: 14px;">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <input type="text" placeholder="Email" name="login" required>
+            <input type="password" placeholder="Password" name="password" required>
+
+            <button class="login-btn" type="submit">Login</button>
+
+            <!-- Forgot password link -->
+            <div style="text-align: right; margin-top: 8px;">
+                <a href="{% url 'account_reset_password' %}" style="font-size: 14px; text-decoration: none; color: #007bff;">
+                    Forgot password?
+                </a>
             </div>
 
+            <div class="divider">or</div>
+
+            <!-- Google login button -->
+            <a class="social-btn google-btn" href="{% provider_login_url 'google' process='login' %}">
+                <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google">
+                Continue with Google
+            </a>
+
             <div class="signup-text">
-                New to BookMyShow? <a href="#">Sign up</a>
+                New to BookMyShow? <a href="{% url 'account_signup' %}">Sign up</a>
             </div>
         </form>
     </div>
-
 </body>
 
 </html>
