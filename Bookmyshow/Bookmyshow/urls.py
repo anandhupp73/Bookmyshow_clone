@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from bms import views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('',include('bms.urls'))
 ]

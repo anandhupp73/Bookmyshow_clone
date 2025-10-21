@@ -167,4 +167,4 @@ EMAIL_HOST_PASSWORD = 'your_app_password'  # Use App Password if Gmail
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-SITE_ID = 1
+SITE_ID = 2
