@@ -231,7 +231,7 @@
 }
 
 /* Carousel container for positioning arrows */
-.carousel-container {
+.carousel-container-crew-review {
     position: relative;
 }
 
@@ -260,6 +260,11 @@
 
 .right-arrow {
     right: -20px;
+}
+
+.left-arrow {
+    left: -20px;
+    display: none;
 }
 
 /* Hiding default scrollbars */

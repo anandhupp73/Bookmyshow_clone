@@ -86,8 +86,11 @@
 
     <div class="crew-section">
         <h2>Crew</h2>
-        <div class="carousel-container">
-            <div class="crew-carousel">
+        <div class="carousel-container-crew-review">
+
+            <div class="carousel-arrow left-arrow" onclick="scrollCarousel('crew-carousel', 'left')">&lsaquo;</div>
+
+            <div class="crew-carousel" id="crew-carousel">
                 {% for member in movie.castcrew.all %}
                 <div class="crew-member">
                     <img src="{{ member.profile_image.url }}" alt="{{ member.name }}">
@@ -96,7 +99,8 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="carousel-arrow right-arrow">&rsaquo;</div>
+
+            <div class="carousel-arrow right-arrow" onclick="scrollCarousel('crew-carousel','right')">&rsaquo;</div>
         </div>
     </div>
 
@@ -114,8 +118,11 @@
             <div class="tag">#AwesomeStory<span>107362</span></div>
         </div>
 
-        <div class="carousel-container">
-            <div class="reviews-carousel">
+        <div class="carousel-container-crew-review">
+
+             <div class="carousel-arrow left-arrow" onclick="scrollCarousel('reviews-carousel', 'left')">&lsaquo;</div>
+
+            <div class="reviews-carousel" id="reviews-carousel">
                 {% for review in movie.reviews.all %}
                 <div class="review-card">
                     <div class="review-card-header">
@@ -138,10 +145,59 @@
                 <p>No reviews yet.</p>
                 {% endfor %}
             </div>
-            <div class="carousel-arrow right-arrow">&rsaquo;</div>
+           
+            <div class="carousel-arrow right-arrow" onclick="scrollCarousel('reviews-carousel','right')">&rsaquo;</div>
         </div>
     </div>
 
 </div>
+
+<script>
+function scrollCarousel(id, direction = 'right') {
+    const container = document.getElementById(id);
+    if (!container) return;
+
+    const scrollAmount = container.offsetWidth * 0.8;
+    const delta = direction === 'left' ? -scrollAmount : scrollAmount;
+
+    container.scrollBy({
+        left: delta,
+        behavior: 'smooth'
+    });
+
+    // Wait for scroll to finish, then update arrows
+    setTimeout(() => {
+        updateArrowVisibility(container);
+    }, 300);
+}
+
+function updateArrowVisibility(container) {
+    const parent = container.parentElement;
+    const leftArrow = parent.querySelector('.left-arrow');
+    const rightArrow = parent.querySelector('.right-arrow');
+
+    if (!leftArrow || !rightArrow) return;
+
+    // Show/hide arrows based on scroll position
+    leftArrow.style.display = container.scrollLeft > 0 ? 'flex' : 'none';
+    
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    rightArrow.style.display = container.scrollLeft < maxScrollLeft ? 'flex' : 'none';
+}
+
+// Initialize visibility on page load
+document.addEventListener("DOMContentLoaded", () => {
+    const carousels = document.querySelectorAll('.crew-carousel, .reviews-carousel');
+    carousels.forEach(container => {
+        updateArrowVisibility(container);
+
+        // Also update on manual scroll (e.g., swiping)
+        container.addEventListener('scroll', () => {
+            updateArrowVisibility(container);
+        });
+    });
+});
+</script>
+
 
 {% endblock %}
