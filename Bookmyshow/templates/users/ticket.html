@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load base64_filters %}
+    <meta charset="utf-8">
+    <title>Movie Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
+            padding: 20px;
+        }
+        .ticket {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            margin: 0 auto;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .ticket img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .details {
+            margin-top: 15px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .qr-code {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <h2>Booking Confirmed!</h2>
+
+        <!-- Movie Main Image -->
+        {% if booking.movie.main_image %}
+            <img src="{{ booking.movie.main_image.url }}" alt="{{ booking.movie.title }}">
+        {% endif %}
+
+        <div class="details">
+            <p><strong>Movie:</strong> {{ booking.movie.title }}</p>
+            <p><strong>Date:</strong> {{ booking.booked_at.date }}</p>
+            <p><strong>Seats:</strong> 
+                {% for seat in booking.seats.all %}
+                    {{ seat.seat_number }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </div>
+
+        <div class="qr-code">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+        </div>
+    </div>
+</body>
+</html>

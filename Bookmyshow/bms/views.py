@@ -1,12 +1,23 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
+from django.http import HttpResponse,FileResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout,authenticate
-from django.contrib.auth.decorators import user_passes_test,login_required
+from django.contrib.auth.decorators import login_required
 from functools import wraps
 from django.db.models import Avg, Count
-from django.views.decorators.http import require_http_methods
+from django.core.mail import send_mail
+from django.conf import settings
+from xhtml2pdf import pisa
+from django.template.loader import render_to_string,get_template
+import io
+import qrcode
+from django.core.files.base import ContentFile
+import base64
+
+
+
 
 # Create your views here.
 
@@ -130,39 +141,6 @@ def view_reviews(request):
 
 # ======== USER SECTION ========
 
-# def user_register(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         email = request.POST['email']
-#         password = request.POST['password']
-        
-#         if User.objects.filter(username=username).exists():
-#             return render(request, 'register.html', {'error': 'Username already taken'})
-        
-#         user = User.objects.create_user(username=username, email=email, password=password)
-#         user.save()
-#         return redirect('user_login')
-    
-#     return render(request, 'users/user_register.html')
-
-# def user_login(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             request.session['is_user_logged_in'] = True
-#             return redirect('home')
-#         else:
-#             return render(request, 'users/user_login.html', {'error': 'Invalid credentials'})
-#     return render(request,'users/user_login.html')
-
-
-# def user_logout(request):
-#     if 'is_user_logged_in' in request.session:
-#         del request.session['is_user_logged_in']
-#     return redirect('home')
 
 def movie_booking(request,id):
     movie = get_object_or_404(Movie, id=id)
@@ -230,7 +208,6 @@ def create_seats_for_movie(movie, rows=5, seats_per_row=10):
             Seat.objects.create(movie=movie, seat_number=seat_label)
 
 @login_required
-# @require_http_methods(["GET", "POST"])
 def book_seats(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
@@ -254,6 +231,23 @@ def book_seats(request, movie_id):
         booking = Booking.objects.create(user=request.user, movie=movie)
         booking.seats.set(seats_to_book)
         booking.save()
+        
+        
+        # ===== Send email to user =====
+        seat_numbers = ", ".join([seat.seat_number for seat in seats_to_book])
+        subject = f"Your seats for {movie.title} are booked!"
+        message = f"Hello {request.user.username},\n\n" \
+                  f"You have successfully booked the following seats for {movie.title}:\n" \
+                  f"{seat_numbers}\n\n" \
+                  f"Enjoy the movie!\n\nRegards,\nMovie Booking Team"
+
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL, 
+            [request.user.email],
+            fail_silently=False
+        )
 
         messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
         return redirect('booking_confirmation', booking_id=booking.id)
@@ -264,3 +258,30 @@ def book_seats(request, movie_id):
 def booking_confirmation(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
     return render(request, 'users/booking_conform.html', {'booking': booking})
+
+# <--------TICKET PDF -------->
+
+@login_required 
+
+def download_ticket(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Generate QR code
+    qr = qrcode.QRCode(box_size=2, border=1)
+    qr.add_data(f"BookingID:{booking.id}")
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    # Render PDF
+    template = get_template('users/ticket.html')
+    html = template.render({'booking': booking, 'qr_code': qr_code_base64})
+    
+    pdf_buffer = io.BytesIO()
+    pisa.CreatePDF(io.StringIO(html), dest=pdf_buffer)
+    pdf_buffer.seek(0)
+    
+    return FileResponse(pdf_buffer, as_attachment=True, filename=f'ticket_{booking.id}.pdf')
