@@ -1,62 +1,217 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% load base64_filters %}
-    <meta charset="utf-8">
-    <title>Movie Ticket</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6f6f6;
-            padding: 20px;
-        }
-        .ticket {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            width: 500px;
-            margin: 0 auto;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        }
-        .ticket img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        .details {
-            margin-top: 15px;
-        }
-        .details p {
-            margin: 5px 0;
-        }
-        .qr-code {
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your M-Ticket</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #e9ebee;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* --- PRINT SETTINGS --- */
+    @media print {
+      body {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ticket {
+        box-shadow: none !important;
+        margin: 0 auto;
+        width: 350px;
+        page-break-inside: avoid;
+      }
+
+      .movie-poster {
+        height: 180px !important;
+        max-height: 180px !important;
+      }
+
+      .movie-poster img {
+        width: 100%;
+        height: 100% !important;
+        object-fit: cover !important;
+      }
+    }
+
+    /* --- CARD LAYOUT --- */
+    .ticket {
+      width: 350px;
+      max-width: 100%;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .movie-poster {
+      width: 100%;
+      height: 180px;
+      max-height: 180px;
+      overflow: hidden;
+    }
+
+    .movie-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ticket-body {
+      padding: 25px;
+    }
+
+    .movie-details {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .movie-details h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      color: #111;
+    }
+
+    .movie-details p {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+    }
+
+    .separator {
+      border-top: 2px dashed #e0e0e0;
+      margin: 20px 0;
+    }
+
+    .booking-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .qr-code img {
+      width: 110px;
+      height: 110px;
+      border-radius: 8px;
+    }
+
+    .info-block {
+      flex: 1;
+    }
+
+    .info-block h3 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #000;
+      margin: 0;
+    }
+
+    .info-block p {
+      font-size: 15px;
+      color: #333;
+      margin: 6px 0;
+    }
+
+    .info-block p strong {
+      color: #000;
+    }
+
+    .show-details {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .show-details p {
+      font-size: 14px;
+      color: #333;
+      margin: 4px 0;
+      font-weight: 500;
+    }
+
+    .confirmation-msg {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 25px;
+      background: #f7f7f7;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .footer span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-    <div class="ticket">
-        <h2>Booking Confirmed!</h2>
 
-        <!-- Movie Main Image -->
-        {% if booking.movie.main_image %}
-            <img src="{{ booking.movie.main_image.url }}" alt="{{ booking.movie.title }}">
-        {% endif %}
-
-        <div class="details">
-            <p><strong>Movie:</strong> {{ booking.movie.title }}</p>
-            <p><strong>Date:</strong> {{ booking.booked_at.date }}</p>
-            <p><strong>Seats:</strong> 
-                {% for seat in booking.seats.all %}
-                    {{ seat.seat_number }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-        </div>
-
-        <div class="qr-code">
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
-        </div>
+  <div class="ticket">
+    
+    <div class="movie-poster">
+      <img src="{{ movie_poster }}" alt="{{ movie_title }} Poster">
     </div>
+
+    <div class="ticket-body">
+
+      <div class="movie-details">
+        <h2>{{ movie_title }}</h2>
+        <p>{{ theatre_name }}</p>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="booking-info">
+        <div class="qr-code">
+          <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+        </div>
+        <div class="info-block">
+          <h3>{{ screen }}</h3>
+          <p><strong>Seat:</strong> {{ seat }}</p>
+          <p><strong>Booking ID:</strong> {{ booking_id }}</p>
+        </div>
+      </div>
+
+      <div class="show-details">
+        <p>{{ show_date }} | {{ show_time }}</p>
+        <p>{{ language }} | {{ movie_type }}</p>
+      </div>
+
+      <p class="confirmation-msg">
+        A confirmation is sent via e-mail/SMS/WhatsApp within 15 minutes of booking.
+      </p>
+
+    </div>
+
+    <div class="footer">
+      <span>Total Amount</span>
+      <span>₹{{ total_amount }}</span>
+    </div>
+
+  </div>
+
 </body>
 </html>

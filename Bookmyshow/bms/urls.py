@@ -23,7 +23,6 @@ urlpatterns = [
     path('my-wishlist/', views.user_wishlist, name='user_wishlist'),
     path('book-seats/<int:movie_id>/', views.book_seats, name='book_seats'),
     path('booking-confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),
-    path('ticket/<int:booking_id>/download/', views.download_ticket, name='download_ticket'),
-
+    path('ticket/<int:booking_id>',views.generate_ticket_pdf, name='download_ticket'),
 
 ]

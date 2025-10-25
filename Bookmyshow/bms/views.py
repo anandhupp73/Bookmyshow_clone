@@ -9,7 +9,7 @@ from functools import wraps
 from django.db.models import Avg, Count
 from django.core.mail import send_mail
 from django.conf import settings
-from xhtml2pdf import pisa
+from weasyprint import HTML
 from django.template.loader import render_to_string,get_template
 import io
 import qrcode
@@ -261,27 +261,54 @@ def booking_confirmation(request, booking_id):
 
 # <--------TICKET PDF -------->
 
-@login_required 
-
-def download_ticket(request, booking_id):
+@login_required
+def generate_ticket_pdf(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
+    movie = booking.movie
 
-    # Generate QR code
-    qr = qrcode.QRCode(box_size=2, border=1)
-    qr.add_data(f"BookingID:{booking.id}")
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    
-    buffer = io.BytesIO()
-    img.save(buffer, format="PNG")
-    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+    # --- QR Code ---
+    qr_text = (
+        f"🎬 Movie: {movie.title}\n"
+        f"💺 Seats: {', '.join([seat.seat_number for seat in booking.seats.all()])}\n"
+        f"🗓 Date: {booking.booked_at.strftime('%Y-%m-%d')}\n"
+        f"🎫 Booking ID: {booking.id}"
+    )
+    qr_image = qrcode.make(qr_text)
+    qr_io = io.BytesIO()
+    qr_image.save(qr_io, format="PNG")
+    qr_base64 = base64.b64encode(qr_io.getvalue()).decode()
 
-    # Render PDF
-    template = get_template('users/ticket.html')
-    html = template.render({'booking': booking, 'qr_code': qr_code_base64})
-    
-    pdf_buffer = io.BytesIO()
-    pisa.CreatePDF(io.StringIO(html), dest=pdf_buffer)
-    pdf_buffer.seek(0)
-    
-    return FileResponse(pdf_buffer, as_attachment=True, filename=f'ticket_{booking.id}.pdf')
+    # --- Movie Poster ---
+    if movie.main_image:
+        with open(movie.main_image.path, "rb") as f:
+            movie_poster = base64.b64encode(f.read()).decode()
+        movie_poster = f"data:image/jpeg;base64,{movie_poster}"
+    else:
+        movie_poster = "https://via.placeholder.com/350x180.png?text=No+Image"
+
+    # --- Render HTML with Context ---
+    html_string = render_to_string("users/ticket.html", {
+        "movie_title": movie.title,
+        "movie_type": movie.genre,
+        "language": movie.language,
+        "show_date": booking.booked_at.strftime("%d %b %Y"),
+        "show_time": "07:30 PM",  # Replace with real field if available
+        "theatre_name": "PVR Cinemas",
+        "screen": "Screen 3",
+        "seat": ", ".join([seat.seat_number for seat in booking.seats.all()]),
+        "booking_id": booking.id,
+        "total_amount": "₹500.00",
+        "movie_poster": movie_poster,
+        "qr_code": qr_base64,
+    })
+
+    # --- Generate PDF ---
+    pdf_file = HTML(
+        string=html_string,
+        base_url=request.build_absolute_uri()
+    ).write_pdf()
+
+    # --- Return as downloadable file ---
+    response = HttpResponse(pdf_file, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{movie.title}_ticket.pdf"'
+    return response
