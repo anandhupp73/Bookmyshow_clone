@@ -57,7 +57,7 @@
                     <span>{{ movie.release_date|date:"j M, Y" }}</span>
                 </div>
 
-                <a href="{% url 'book_seats' movie.id %}" class="book-tickets-btn">Book tickets</a>
+                <a href="{% url 'select_theatre' movie.id %}" class="book-tickets-btn">Book tickets</a>
 
                 <div class="wishlist">
                     {% if user.is_authenticated %}

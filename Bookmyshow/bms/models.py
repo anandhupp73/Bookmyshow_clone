@@ -52,28 +52,47 @@ class Wishlist(models.Model):
 
 # FOR -- BOOKING -- TICKETS
 
-# class Show(models.Model):
-#     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='shows')
-#     show_date = models.DateField()
-#     show_time = models.TimeField()
+class Theatre(models.Model):
+    name = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    total_screens = models.PositiveBigIntegerField(default=1)
 
-    # def __str__(self):
-    #     return f"{self.movie.title} on {self.show_date} at {self.show_time}"
+    def __str__(self):
+        return f"{self.name} - {self.location}"
 
+class Screen(models.Model):
+    theatre = models.ForeignKey(Theatre,on_delete=models.CASCADE,related_name="screens")
+    screen_number = models.CharField(max_length=10)
+    total_seats = models.PositiveIntegerField(default=50)
+
+    def __str__(self):
+        return f"{self.theatre.name} - Screen{self.screen_number}"
+    
+class Show(models.Model):
+    movie = models.ForeignKey(Movie,on_delete=models.CASCADE,related_name="shows")
+    theatre = models.ForeignKey(Theatre,on_delete=models.CASCADE,related_name="shows")
+    screen = models.ForeignKey(Screen,on_delete=models.CASCADE)
+    show_time = models.TimeField()
+    show_date = models.DateField()
+    ticket_price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.movie.title} @ {self.theatre.name} - {self.show_time}"
 
 class Seat(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='seats')
+    show = models.ForeignKey(Show, on_delete=models.CASCADE, related_name='seats')
     seat_number = models.CharField(max_length=5)  # e.g., "A1", "B3"
     is_booked = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.seat_number} - {'Booked' if self.is_booked else 'Available'}"
+        return f"{self.seat_number} - {self.show}"
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE ,default=1)
+    show = models.ForeignKey(Show, on_delete=models.CASCADE, null=True, blank=True)  # allow null temporarily
     seats = models.ManyToManyField(Seat)
     booked_at = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=8, decimal_places=2)
 
     def __str__(self):
-        return f"{self.user.username} booked {self.seats.count()} seat(s) for {self.movie.title}"
+        return f"{self.user.username} booked {self.seats.count()} seat(s) for {self.show.movie.title}"

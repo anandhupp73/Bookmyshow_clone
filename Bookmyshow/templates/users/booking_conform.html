@@ -1,92 +1,37 @@
-{% extends "home.html" %}
-{% load static %}
 
+{% extends "home.html" %}
+{% block title %}Booking Confirmed{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<div class="confirmation">
+  <h2>✅ Booking Confirmed!</h2>
+  <p>Movie: <strong>{{ booking.show.movie.title }}</strong></p>
+  <p>Theatre: {{ booking.show.theatre.name }}</p>
+  <p>Show Time: {{ booking.show.show_date }} {{ booking.show.show_time }}</p>
+  <p>Seats: {{ booking.seats.all|join:", " }}</p>
+  <p>Total Paid: ₹{{ booking.total_amount }}</p>
+  <a href="{% url 'home' %}" class="btn">Back to Home</a>
+</div>
 
 <style>
-.booking-confirmation-container {
-    max-width: 600px;
-    margin: 60px auto;
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: #333;
+.confirmation { 
+    text-align:center; 
+    margin:60px auto; 
+    max-width:500px;
+    background:#fff; 
+    padding:30px; 
+    border-radius:12px; 
+    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
 }
-
-.booking-confirmation-container h1 {
-    color: #4CAF50;
-    font-size: 32px;
-    margin-bottom: 20px;
+.btn { display:inline-block; 
+    margin-top:20px; 
+    background:#4CAF50; 
+    color:white; 
+    padding:10px 25px; 
+    border-radius:6px; 
+    text-decoration:none; 
 }
-
-.confirmation-icon {
-    font-size: 60px;
-    color: #4CAF50;
-    margin-bottom: 20px;
-}
-
-.booking-details p {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.booking-details ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-.booking-details ul li {
-    background-color: #f1f1f1;
-    margin: 5px auto;
-    padding: 10px 15px;
-    border-radius: 6px;
-    display: inline-block;
-    font-weight: 500;
-}
-
-.back-home-btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 25px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 6px;
-    font-size: 16px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-}
-
-.back-home-btn:hover {
-    background-color: #45a049;
+.btn:hover { 
+    background:#45a049; 
 }
 </style>
-
-<div class="booking-confirmation-container">
-    <div class="confirmation-icon">
-        <i class="fas fa-check-circle"></i>
-    </div>
-    <h1>Booking Confirmed!</h1>
-
-    <div class="booking-details">
-        <p><strong>Movie:</strong> {{ booking.show.movie.title }}</p>
-        <p><strong>Show Date:</strong> {{ booking.show.show_date }}</p>
-        <p><strong>Show Time:</strong> {{ booking.show.show_time }}</p>
-        <p><strong>Seats Booked:</strong></p>
-        <ul>
-            {% for seat in booking.seats.all %}
-                <li>{{ seat.seat_number }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <a href="{% url 'home' %}" class="back-home-btn">
-        <i class="fas fa-home"></i> Back to Home
-    </a>
-    <a href="{% url 'download_ticket' booking.id %}" target="_blank">Download Ticket (PDF)</a>
-</div>
 {% endblock %}

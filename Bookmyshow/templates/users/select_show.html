@@ -1,0 +1,53 @@
+{% extends "home.html" %}
+{% block title %}Select Show - {{ movie.title }}{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>Show Times at {{ theatre.name }}</h2>
+  <div class="show-list">
+    {% for show in shows %}
+      <div class="show-card">
+        <p><strong>Date:</strong> {{ show.show_date }}</p>
+        <p><strong>Time:</strong> {{ show.show_time }}</p>
+        <p><strong>Price:</strong> ₹{{ show.ticket_price }}</p>
+        <a href="{% url 'book_seats' show.id %}" class="btn">Book Now</a>
+      </div>
+    {% empty %}
+      <p>No shows available for this theatre.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.container { 
+    text-align:center; 
+    margin-top:120px; 
+}
+.show-list { 
+    display:flex; 
+    flex-wrap:wrap; 
+    justify-content:center; 
+    gap:20px; 
+}
+.show-card { 
+    background:#fdfdfd; 
+    border-radius:12px; 
+    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
+    padding:20px; 
+    width:230px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn { 
+    background:#2196F3; 
+    color:#fff; 
+    padding:10px 20px; 
+    text-decoration:none; 
+    border-radius:6px;
+    margin-top: 20px; 
+}
+.btn:hover { 
+    background:#1976D2; 
+}
+</style>
+{% endblock %}

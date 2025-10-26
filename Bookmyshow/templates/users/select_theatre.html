@@ -1,0 +1,53 @@
+{% extends "home.html" %}
+{% block title %}Select Theatre - {{ movie.title }}{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>Select Theatre for "{{ movie.title }}"</h2>
+  <div class="theatre-list">
+    {% for theatre in theatres %}
+      <div class="theatre-card">
+        <h3>{{ theatre.name }}</h3>
+        <p>{{ theatre.location }}</p>
+        <a href="{% url 'select_show' movie.id theatre.id %}" class="btn">View Shows</a>
+      </div>
+    {% empty %}
+      <p>No theatres available for this movie.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.container { 
+    text-align:center; 
+    margin-top:70px; 
+}
+.theatre-list { 
+    display:flex; 
+    flex-wrap:wrap; 
+    justify-content:center; 
+    gap:20px; 
+    margin-top:60px;
+}
+.theatre-card { 
+    background:#fff; 
+    border-radius:12px; 
+    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
+    padding:20px; 
+    width:250px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn { 
+    background:#4CAF50; 
+    color:#fff;
+    padding:10px 20px; 
+    text-decoration:none; 
+    border-radius:6px; 
+    margin-top: 20px;
+}
+.btn:hover { 
+    background:#45a049; 
+}
+</style>
+{% endblock %}

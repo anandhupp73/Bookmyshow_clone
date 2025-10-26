@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Show</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  {% load static %}
+  <link rel="stylesheet" href="{% static "adminpanelcss/add_show.css" %}">
+</head>
+<body>
+
+  <div class="container mt-5 form-container">
+    <h2 class="mb-4 text-center">Add Show</h2>
+
+    <form method="post" action="{% url 'add_show' %}">
+      {% csrf_token %}
+      <!-- Select Movie -->
+      <div class="mb-3">
+        <label class="form-label">Select Movie</label>
+        <select name="movie" class="form-select" required>
+          <option value="">-- Select Movie --</option>
+          {% for movie in movies %}
+            <option value="{{ movie.id }}">{{ movie.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Select Theatre -->
+      <div class="mb-3">
+        <label class="form-label">Select Theatre</label>
+        <select name="theatre" class="form-select" required>
+          <option value="">-- Select Theatre --</option>
+          {% for theatre in theatres %}
+            <option value="{{ theatre.id }}">{{ theatre.name }} - {{ theatre.location }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Select Screen -->
+      <div class="mb-3">
+        <label class="form-label">Select Screen</label>
+        <select name="screen" class="form-select" required>
+          <option value="">-- Select Screen --</option>
+          {% for screen in screens %}
+            <option value="{{ screen.id }}">{{ screen.theatre.name }} - Screen {{ screen.screen_number }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Date and Time -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Show Date</label>
+          <input type="date" name="show_date" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Show Time</label>
+          <input type="time" name="show_time" class="form-control" required>
+        </div>
+      </div>
+
+      <!-- Ticket Price -->
+      <div class="mb-3">
+        <label class="form-label">Ticket Price (₹)</label>
+        <input type="number" step="0.01" name="ticket_price" class="form-control" placeholder="Enter price" required>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn btn-primary w-100">Add Show</button>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -126,7 +126,7 @@ def add_castcrew(request):
             profile_image=profile_image
         )
         messages.success(request,'Cast/Crew added succesfully')
-        return redirect('view_movies')
+        return redirect('add_castcrew')
     return render(request, 'adminpanel/add_castcrew.html', {'movies': movies})
 
 @admin_required
@@ -175,6 +175,64 @@ def delete_movie(request, movie_id):
 
     messages.error(request, "Invalid request.")
     return redirect('view_movies')
+
+@admin_required
+def add_theatre(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        location = request.POST['location']
+        total_screens = request.POST['total_screens']
+        Theatre.objects.create(name=name,location=location,total_screens=total_screens)
+        return redirect('view_theatres')
+    return render(request,'adminpanel/add_theatre.html')
+
+@admin_required
+def view_theatres(request):
+    theatres = Theatre.objects.all()
+    return render(request,'adminpanel/view_theatres.html',{ 'theatres' : theatres})
+
+@admin_required
+def add_screen(request):
+    theatres = Theatre.objects.all()
+    if request.method == 'POST':
+        theatre_id = request.POST['theatre']
+        screen_number = request.POST['screen_number']
+        total_seats = request.POST['total_seats']
+        Screen.objects.create(theatre_id=theatre_id,screen_number=screen_number,total_seats=total_seats)
+        return redirect('view_theatres')
+    return render(request,'adminpanel/add_screen.html',{ 'theatres' : theatres})
+
+@admin_required
+def add_show(request):
+    movies = Movie.objects.all()
+    theatres = Theatre.objects.all()
+    screens = Screen.objects.all()
+
+    if request.method == 'POST':
+        movie_id = request.POST['movie']
+        theatre_id = request.POST['theatre']
+        screen_id = request.POST['screen']
+        show_date = request.POST['show_date']
+        show_time = request.POST['show_time']
+        ticket_price = request.POST['ticket_price']
+
+        # Use _id to assign directly, or fetch instances
+        Show.objects.create(
+            movie_id=movie_id,     # use _id to assign directly
+            theatre_id=theatre_id,
+            screen_id=screen_id, 
+            show_date = show_date,
+            show_time = show_time,
+            ticket_price = ticket_price
+        )
+        return redirect('view_shows')
+    return render(request,'adminpanel/add_show.html',{ 'movies' : movies, 'theatres' : theatres, 'screens' : screens})
+
+@admin_required
+def view_shows(request):
+    shows = Show.objects.select_related('movie','theatre','screen').all()
+    return render(request,'adminpanel/view_shows.html',{'shows' : shows ,})
+
 
 # ======== USER SECTION ========
 
@@ -238,50 +296,95 @@ def user_wishlist(request):
 
 #creating seats for booking
 
-def create_seats_for_movie(movie, rows=5, seats_per_row=10):
-    for row in range(rows):
+# def create_seats_for_show(show):
+#     total_seats = show.screen.total_seats
+#     rows = total_seats // 10
+#     seats_per_row = 10
+
+#     for row in range(rows):
+#         for seat_num in range(1, seats_per_row + 1):
+#             seat_label = f"{chr(65 + row)}{seat_num}"  # A1, B2...
+#             Seat.objects.create(show=show, seat_number=seat_label)
+
+def create_seats_for_show(show):
+    total_seats = show.screen.total_seats
+    seats_per_row = 10  # You can adjust this if needed
+    rows = total_seats // seats_per_row
+    remaining_seats = total_seats % seats_per_row
+
+    # Full rows
+    for row_index in range(rows):
         for seat_num in range(1, seats_per_row + 1):
-            seat_label = f"{chr(65 + row)}{seat_num}"  # e.g., A1, B2
-            Seat.objects.create(movie=movie, seat_number=seat_label)
+            seat_label = f"{chr(65 + row_index)}{seat_num}"  # e.g., A1, B2
+            Seat.objects.create(show=show, seat_number=seat_label)
+
+    # Remaining seats in the last row (if any)
+    if remaining_seats:
+        row_index = rows
+        for seat_num in range(1, remaining_seats + 1):
+            seat_label = f"{chr(65 + row_index)}{seat_num}"
+            Seat.objects.create(show=show, seat_number=seat_label)
+
+
+# Step 1 — Select Theatre
+def select_theatre(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    theatres = Theatre.objects.filter(shows__movie=movie).distinct()
+    return render(request, 'users/select_theatre.html', {'movie': movie, 'theatres': theatres})
+
+
+# Step 2 — Select Show Time
+def select_show(request, movie_id, theatre_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    theatre = get_object_or_404(Theatre, id=theatre_id)
+    shows = Show.objects.filter(movie=movie, theatre=theatre)
+    return render(request, 'users/select_show.html', {'movie': movie, 'theatre': theatre, 'shows': shows})
 
 @login_required
-def book_seats(request, movie_id):
-    movie = get_object_or_404(Movie, id=movie_id)
+def book_seats(request, show_id):
+    show = get_object_or_404(Show, id=show_id)
 
     # Create seats automatically if none exist
-    if not movie.seats.exists():
-        create_seats_for_movie(movie, rows=5, seats_per_row=10)
+    if not show.seats.exists():
+        create_seats_for_show(show)
 
-    seats = movie.seats.all().order_by('seat_number')
+    seats = show.seats.all().order_by('seat_number')
 
     if request.method == 'POST':
         selected_seat_ids = request.POST.getlist('seats')
 
+        # Check for already booked seats
         already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
         if already_booked.exists():
             messages.error(request, "Some selected seats are already booked. Please choose different seats.")
-            return redirect('book_seats', movie_id=movie.id)
+            return redirect('book_seats', show_id=show.id)
 
         seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
         seats_to_book.update(is_booked=True)
 
-        booking = Booking.objects.create(user=request.user, movie=movie)
+        # Calculate total amount
+        total_amount = seats_to_book.count() * show.ticket_price
+
+        # Create booking
+        booking = Booking.objects.create(user=request.user, show=show, total_amount=total_amount)
         booking.seats.set(seats_to_book)
         booking.save()
-        
-        
-        # ===== Send email to user =====
+
+        # Send email confirmation
         seat_numbers = ", ".join([seat.seat_number for seat in seats_to_book])
-        subject = f"Your seats for {movie.title} are booked!"
+        subject = f"Your seats for {show.movie.title} are booked!"
         message = f"Hello {request.user.username},\n\n" \
-                  f"You have successfully booked the following seats for {movie.title}:\n" \
-                  f"{seat_numbers}\n\n" \
+                  f"You have successfully booked the following seats for {show.movie.title}:\n" \
+                  f"{seat_numbers}\n" \
+                  f"Show: {show.show_time} on {show.show_date}\n" \
+                  f"Theatre: {show.theatre.name}, Screen: {show.screen.screen_number}\n" \
+                  f"Total Amount: ₹{total_amount}\n\n" \
                   f"Enjoy the movie!\n\nRegards,\nMovie Booking Team"
 
         send_mail(
             subject,
             message,
-            settings.DEFAULT_FROM_EMAIL, 
+            settings.DEFAULT_FROM_EMAIL,
             [request.user.email],
             fail_silently=False
         )
@@ -289,7 +392,9 @@ def book_seats(request, movie_id):
         messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
         return redirect('booking_confirmation', booking_id=booking.id)
 
-    return render(request, 'users/book_seats.html', {'movie': movie, 'seats': seats})
+    return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
+
+
 
 @login_required
 def booking_confirmation(request, booking_id):

@@ -1,11 +1,15 @@
 {% extends "home.html" %}
 {% load static %}
 
-{% block title %}Select Seats - {{ movie.title }}{% endblock %}
+{% block title %}Select Seats - {{ show.movie.title }}{% endblock %}
 
 {% block content %}
-{% comment %} <h1>Select Seats for "{{ movie.title }}"</h1> {% endcomment %}
 <div class="wrap">
+    <h2>Select Seats for "{{ show.movie.title }}"</h2>
+    <p>Theatre: <strong>{{ show.theatre.name }}</strong>, Screen: <strong>{{ show.screen.screen_number }}</strong></p>
+    <p>Show Time: <strong>{{ show.show_time }}</strong> on <strong>{{ show.show_date }}</strong></p>
+    <p>Ticket Price: ₹{{ show.ticket_price }}</p>
+
     <form method="post">
         {% csrf_token %}
         <div class="seats-container">
@@ -18,31 +22,30 @@
             {% endfor %}
         </div>
 
-         <div style="text-align:center; margin-bottom: 20px; margin-top: 10px">
-            <span
-                style="display: inline-block; width: 20px; height: 20px; background-color: #e0e0e0; border: 1px solid #ccc; margin-right: 5px;"></span>
-            Available
-            <span
-                style="display: inline-block; width: 20px; height: 20px; background-color: #4CAF50; margin-left: 15px; margin-right: 5px;"></span>
-            Selected
-            <span
-                style="display: inline-block; width: 20px; height: 20px; background-color: #ff4d4d; margin-left: 15px; margin-right: 5px;"></span>
-            Booked
+        <div class="seat-legend">
+            <span class="legend available"></span> Available
+            <span class="legend selected"></span> Selected
+            <span class="legend booked"></span> Booked
         </div>
+
+        <p>Total Amount: ₹<span id="total">0</span></p>
+
         <button type="submit" class="book-button">Book Selected Seats</button>
     </form>
 </div>
+
 <style>
-    .wrap {
+.wrap {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin: 40px 0;
 }
 
 .seats-container {
     max-width: 700px;
-    padding-top: 100px;
+    padding-top: 20px;
     text-align: center;
     display: flex;
     flex-wrap: wrap;
@@ -59,14 +62,12 @@
     background-color: #e0e0e0;
     border: 2px solid #ccc;
     cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     font-size: 14px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    user-select: none;
+    transition: all 0.3s ease;
 }
 
 .seat:hover {
@@ -79,7 +80,6 @@
     display: none;
 }
 
-/* Selected */
 .seat input[type="checkbox"]:checked + span {
     background-color: #4CAF50;
     color: white;
@@ -91,7 +91,6 @@
     justify-content: center;
 }
 
-/* Booked */
 .seat.booked {
     background-color: #ff4d4d;
     color: white;
@@ -100,7 +99,6 @@
     opacity: 0.6;
 }
 
-/* Span inside label */
 .seat span {
     pointer-events: none;
     display: block;
@@ -109,9 +107,26 @@
     line-height: 45px;
 }
 
-/* Booking button */
+.seat-legend {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.seat-legend .legend {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+.seat-legend .available { background-color: #e0e0e0; }
+.seat-legend .selected { background-color: #4CAF50; }
+.seat-legend .booked { background-color: #ff4d4d; }
+
 .book-button {
-    margin-top: 30px;
+    margin-top: 20px;
     padding: 12px 30px;
     background-color: #4CAF50;
     color: white;
@@ -126,30 +141,32 @@
 .book-button:hover {
     background-color: #45a049;
 }
-
 </style>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("form");
-        const bookButton = document.querySelector(".book-button");
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const totalDisplay = document.getElementById("total");
+    const ticketPrice = {{ show.ticket_price }};
 
-        form.addEventListener("submit", function (event) {
-            // Get all selected checkboxes
-            const selectedSeats = form.querySelectorAll("input[type='checkbox']:checked");
+    function updateTotal() {
+        const selectedSeats = form.querySelectorAll("input[type='checkbox']:checked");
+        totalDisplay.textContent = selectedSeats.length * ticketPrice;
+    }
 
-            if (selectedSeats.length === 0) {
-                alert("Please select at least one seat to proceed.");
-                event.preventDefault(); // Stop form submission
-                return;
-            }
+    form.addEventListener("change", updateTotal);
 
-            const confirmBooking = confirm(`You have selected ${selectedSeats.length} seat(s).\nDo you want to confirm the booking?`);
+    form.addEventListener("submit", function (event) {
+        const selectedSeats = form.querySelectorAll("input[type='checkbox']:checked");
+        if (selectedSeats.length === 0) {
+            alert("Please select at least one seat to proceed.");
+            event.preventDefault();
+            return;
+        }
 
-            if (!confirmBooking) {
-                event.preventDefault(); // Stop form submission
-            }
-        });
+        const confirmBooking = confirm(`You have selected ${selectedSeats.length} seat(s).\nDo you want to confirm the booking?`);
+        if (!confirmBooking) event.preventDefault();
     });
+});
 </script>
-
 {% endblock %}
