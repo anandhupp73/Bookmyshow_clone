@@ -16,6 +16,64 @@ h1 {
     color: #e50914; /* A classic red for a movie theme */
 }
 
+/* ===============================
+   MESSAGE STYLES (SUCCESS, ERROR, INFO)
+   =============================== */
+
+.message-container {
+    max-width: 800px;
+    margin: 20px auto 40px auto;
+    text-align: center;
+}
+
+.message {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+/* Success message (green) */
+.message.success {
+    background-color: #14532d;
+    color: #bbf7d0;
+    border-color: #16a34a;
+}
+
+/* Error message (red) */
+.message.error {
+    background-color: #450a0a;
+    color: #fecaca;
+    border-color: #ef4444;
+}
+
+/* Info message (blue) */
+.message.info {
+    background-color: #1e3a8a;
+    color: #bfdbfe;
+    border-color: #3b82f6;
+}
+
+/* Warning message (yellow/orange) */
+.message.warning {
+    background-color: #422006;
+    color: #fde68a;
+    border-color: #f59e0b;
+}
+
+/* Add fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.message {
+    animation: fadeIn 0.4s ease;
+}
 /* Movie Grid Container */
 .movie-grid {
     display: grid;
@@ -24,24 +82,6 @@ h1 {
     gap: 2rem; /* Spacing between the movie cards */
     max-width: 1600px;
     margin: 0 auto; /* Center the grid */
-}
-
-/* Individual Movie Card */
-.movie-card {
-    background-color: #1c1c1c; /* Slightly lighter than the body background */
-    border-radius: 12px; /* Rounded corners */
-    overflow: hidden; /* Ensures the image respects the rounded corners */
-    text-decoration: none; /* Removes underline from the link */
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movie-card:hover {
-    transform: scale(1.05); /* Slightly enlarges the card on hover */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Enhances the shadow on hover */
 }
 
 /* Movie Poster Image */
@@ -89,4 +129,46 @@ h1 {
     font-size: 0.85rem;
     color: #aaa;
     line-height: 1.4;
+}
+/* Ensure link (movie details) doesn't stretch over buttons */
+.movie-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    flex-grow: 1;
+}
+
+/* Make the whole clickable area behave like a card */
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #1c1c1c;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Buttons are outside the clickable link area */
+.movie-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 1rem;
+    border-top: 1px solid #333;
+    background-color: #181818;
+}
+.btn{
+    padding: 5px;
+    border: 1px solid white;
+    /* background-color: wheat; */
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
 }

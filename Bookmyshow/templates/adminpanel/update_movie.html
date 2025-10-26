@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPDATE MOVIE</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanelcss/add_movie.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Movie</h1>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" action="{% url 'update_movie' movie.id %}">
+            {% csrf_token %}
+
+            <input type="text" name="title" value="{{ movie.title }}" placeholder="Movie Title" required>
+
+            <textarea name="description" placeholder="Description" rows="4" required>{{ movie.description }}</textarea>
+
+            <label>Release Date:</label>
+            <input type="date" name="release_date" value="{{ movie.release_date|date:'Y-m-d' }}" required>
+
+            <input type="text" name="duration" value="{{ movie.duration }}" placeholder="Duration (e.g. 2h 15m)" required>
+            <input type="text" name="language" value="{{ movie.language }}" placeholder="Language (e.g. English)" required>
+            <input type="text" name="genre" value="{{ movie.genre }}" placeholder="Genre (e.g. Action, Drama)" required>
+
+            <label>Current Cover Image:</label><br>
+            {% if movie.cover_image %}
+                <img src="{{ movie.cover_image.url }}" alt="Cover Image" width="150" style="border-radius:8px;margin-bottom:10px;">
+            {% else %}
+                <p style="color:#9ca3af;">No cover image uploaded.</p>
+            {% endif %}
+            <input type="file" name="cover_image">
+
+            <label>Current Main Image:</label><br>
+            {% if movie.main_image %}
+                <img src="{{ movie.main_image.url }}" alt="Main Image" width="150" style="border-radius:8px;margin-bottom:10px;">
+            {% else %}
+                <p style="color:#9ca3af;">No main image uploaded.</p>
+            {% endif %}
+            <input type="file" name="main_image">
+
+            <button type="submit">Update Movie</button>
+            <a href="{% url 'view_movies' %}" 
+               style="display:block;text-align:center;margin-top:10px;color:#9ca3af;text-decoration:none;font-weight:500;">
+                ← Back to Movie List
+            </a>
+        </form>
+    </div>
+</body>
+
+</html>

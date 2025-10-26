@@ -62,12 +62,8 @@ def admin_required(view_func):
     return wrapper
 
 
-# @login_required(login_url='/admin-login/')
-# @user_passes_test(is_admin_user,login_url='/admin-login/')
 @admin_required
 def admin_dashboard(request):
-    # if not request.user.is_authenticated:
-    #     return redirect('admin_login')
     
     movie_count = Movie.objects.count()
     cast_count = CastCrew.objects.count()
@@ -138,6 +134,47 @@ def view_reviews(request):
     reviews = Review.objects.all().select_related('movie').order_by('-created_at')
     return render(request, 'adminpanel/view_reviews.html', {'reviews': reviews})
 
+@admin_required
+def update_movie(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    if request.method == 'POST':
+        movie.title = request.POST.get('title', movie.title)
+        movie.description = request.POST.get('description', movie.description)
+        movie.release_date = request.POST.get('release_date', movie.release_date)
+        movie.duration = request.POST.get('duration', movie.duration)
+        movie.language = request.POST.get('language', movie.language)
+        movie.genre = request.POST.get('genre', movie.genre)
+
+        if 'main_image' in request.FILES:
+            movie.main_image = request.FILES['main_image']
+        if 'cover_image' in request.FILES:
+            movie.cover_image = request.FILES['cover_image']
+
+        movie.save()
+        messages.success(request, f"Movie '{movie.title}' updated successfully!")
+        return redirect('view_movies')
+
+    return render(request, 'adminpanel/update_movie.html', {'movie': movie})
+
+@admin_required
+def delete_movie(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    if request.method == "POST":
+        # Manually delete related objects before deleting movie
+        movie.reviews.all().delete()
+        movie.castcrew.all().delete()
+        movie.seats.all().delete()
+        Wishlist.objects.filter(movie=movie).delete()
+        Booking.objects.filter(movie=movie).delete()
+
+        movie.delete()
+        messages.success(request, f"'{movie.title}' and all related data have been deleted successfully.")
+        return redirect('view_movies')
+
+    messages.error(request, "Invalid request.")
+    return redirect('view_movies')
 
 # ======== USER SECTION ========
 

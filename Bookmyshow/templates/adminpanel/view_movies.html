@@ -10,27 +10,47 @@
 </head>
 
 <body>
+    <h1>🎬 Movies</h1>
 
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="movie-grid">
+        {% for movie in movies %}
+        <div class="movie-card">
+            <!-- Clickable area for details -->
+            <a href="{% url 'movie_details' movie.id %}" class="movie-link">
+                {% if movie.main_image %}
+                    <img src="{{ movie.main_image.url }}" alt="{{ movie.title }}" class="movie-poster">
+                {% else %}
+                    <div class="no-image-placeholder">No Image</div>
+                {% endif %}
+
+                <div class="movie-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    <div class="movie-genre">{{ movie.genre }}</div>
+                </div>
+            </a>
+
+            <!-- Admin Action Buttons -->
+            <div class="movie-actions">
+                <a href="{% url 'update_movie' movie.id %}" class="btn edit-btn" style="text-decoration: none; background-color: blue;">✏️ Edit</a>
+                <form method="POST" action="{% url 'delete_movie' movie.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn delete-btn"
+                        onclick="return confirm('Are you sure you want to delete {{ movie.title }}?');" style="background-color: red; text-decoration: none;">
+                        🗑️ Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </body>
-<h1>🎬 Movies</h1>
-
-<div class="movie-grid">
-    {% for movie in movies %}
-    <a href="{% url 'movie_details' movie.id %}" class="movie-card">
-        {% if movie.main_image %}
-        <img src="{{ movie.main_image.url }}" alt="{{ movie.title }}" class="movie-poster">
-        {% else %}
-        <div style="height:330px;background:#ddd;display:flex;align-items:center;justify-content:center;color:#666;">
-            No Image
-        </div>
-        {% endif %}
-
-        <div class="movie-info">
-            <div class="movie-title">{{ movie.title }}</div>
-            <div class="movie-genre">{{ movie.genre }}</div>
-        </div>
-    </a>
-    {% endfor %}
-</div>
 
 </html>
