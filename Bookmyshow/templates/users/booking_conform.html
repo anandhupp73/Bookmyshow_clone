@@ -10,17 +10,19 @@
   <p>Seats: {{ booking.seats.all|join:", " }}</p>
   <p>Total Paid: ₹{{ booking.total_amount }}</p>
   <a href="{% url 'home' %}" class="btn">Back to Home</a>
+  <a href="{% url 'download_ticket' booking.id %}" target="_blank" class="btn">Download Ticket (PDF)</a>
 </div>
 
 <style>
 .confirmation { 
     text-align:center; 
-    margin:60px auto; 
+    margin:130px auto 20px auto;
     max-width:500px;
     background:#fff; 
     padding:30px; 
     border-radius:12px; 
     box-shadow:0 3px 10px rgba(0,0,0,0.1); 
+    border:1px solid black;
 }
 .btn { display:inline-block; 
     margin-top:20px; 

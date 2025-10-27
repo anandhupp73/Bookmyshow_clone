@@ -327,6 +327,7 @@ def create_seats_for_show(show):
 
 
 # Step 1 — Select Theatre
+@login_required
 def select_theatre(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     theatres = Theatre.objects.filter(shows__movie=movie).distinct()
@@ -334,6 +335,7 @@ def select_theatre(request, movie_id):
 
 
 # Step 2 — Select Show Time
+@login_required
 def select_show(request, movie_id, theatre_id):
     movie = get_object_or_404(Movie, id=movie_id)
     theatre = get_object_or_404(Theatre, id=theatre_id)
@@ -406,13 +408,18 @@ def booking_confirmation(request, booking_id):
 @login_required
 def generate_ticket_pdf(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
-    movie = booking.movie
+    show = booking.show
+    movie = show.movie
+    theatre = show.theatre
+    screen = show.screen
 
     # --- QR Code ---
     qr_text = (
         f"🎬 Movie: {movie.title}\n"
+        f"🏢 Theatre: {theatre.name}\n"
+        f"🗓 Date: {show.show_date}\n"
+        f"🕒 Time: {show.show_time.strftime('%I:%M %p')}\n"
         f"💺 Seats: {', '.join([seat.seat_number for seat in booking.seats.all()])}\n"
-        f"🗓 Date: {booking.booked_at.strftime('%Y-%m-%d')}\n"
         f"🎫 Booking ID: {booking.id}"
     )
     qr_image = qrcode.make(qr_text)
@@ -433,13 +440,13 @@ def generate_ticket_pdf(request, booking_id):
         "movie_title": movie.title,
         "movie_type": movie.genre,
         "language": movie.language,
-        "show_date": booking.booked_at.strftime("%d %b %Y"),
-        "show_time": "07:30 PM",  # Replace with real field if available
-        "theatre_name": "PVR Cinemas",
-        "screen": "Screen 3",
+        "show_date": show.show_date.strftime("%d %b %Y"),
+        "show_time": show.show_time.strftime("%I:%M %p"),
+        "theatre_name": theatre.name,
+        "screen": f"Screen {screen.screen_number}",
         "seat": ", ".join([seat.seat_number for seat in booking.seats.all()]),
         "booking_id": booking.id,
-        "total_amount": "₹500.00",
+        "total_amount": f"₹{booking.total_amount}",
         "movie_poster": movie_poster,
         "qr_code": qr_base64,
     })
