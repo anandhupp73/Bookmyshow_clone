@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <div class="back-button-container">
+        <a href="{% url 'admin_dashboard' %}" class="admin-back-button">
+            &larr; Back to Admin Panel
+        </a>
+    </div>
     <h1>🎬 Movies</h1>
 
     {% if messages %}

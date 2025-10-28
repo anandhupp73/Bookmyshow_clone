@@ -1,25 +1,161 @@
-body { 
-    font-family: Arial, sans-serif; 
-    padding: 20px; 
-    background: #f4f4f4; 
+/* ---------- GENERAL PAGE STYLES ---------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0f172a; /* dark navy */
+    color: #e2e8f0;
+    margin: 0;
+    padding: 60px 40px;
+    min-height: 100vh;
+    position: relative;
 }
+
+/* ---------- BACK BUTTON ---------- */
+.top-bar {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+
+.back-btn {
+    text-decoration: none;
+    background-color: #334155;
+    color: #f8fafc;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.back-btn:hover {
+    background-color: #475569;
+    transform: translateY(-1px);
+}
+
+/* ---------- PAGE HEADING ---------- */
+h1 {
+    text-align: center;
+    color: #f8fafc;
+    margin-bottom: 40px;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+/* ---------- TABLE ---------- */
 table {
-    width: 100%; 
-    border-collapse: collapse; 
-    background: #fff; 
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
-th, td { 
-    padding: 12px; 
-    border: 1px solid #ddd; 
-    text-align: left; 
+
+thead {
+    background-color: #334155;
 }
-th { 
-    background-color: #333; 
-    color: #fff; 
+
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+    vertical-align: top;
 }
-tr:nth-child(even) { 
-    background-color: #f9f9f9; 
+
+th {
+    color: #cbd5e1;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
 }
+
+td {
+    color: #f1f5f9;
+    font-size: 15px;
+}
+
+/* ---------- TABLE ROW HOVER ---------- */
+tbody tr:hover {
+    background-color: #27344d;
+    transition: background-color 0.3s;
+}
+
+/* ---------- STAR RATING ---------- */
 .rating-stars {
-    color: #f5b50a; 
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.rating-stars i {
+    font-size: 15px;
+}
+
+/* ---------- NO REVIEWS MESSAGE ---------- */
+p {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 16px;
+    margin-top: 40px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    body {
+        padding: 30px 15px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}
+
+/* ---------- SCROLL BAR STYLE ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #475569;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #6366f1;
+}
+/* ---------- FILTER FORM ---------- */
+.filter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.filter-form label {
+    font-size: 15px;
+    color: #cbd5e1;
+}
+
+.filter-form select {
+    background-color: #334155;
+    color: #f8fafc;
+    border: 1px solid #475569;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.filter-form select:hover,
+.filter-form select:focus {
+    border-color: #6366f1;
 }

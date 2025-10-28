@@ -1,61 +1,113 @@
+/* adminpanelcss/add_show.css */
+
+/* --- General Body --- */
 body {
-  background: linear-gradient(135deg, #283e51, #485563);
-  font-family: 'Poppins', sans-serif;
-  color: #333;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1f2937; /* dark slate gray */
+    color: #d1d5db; /* soft white text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.btn-secondary{
+  position: fixed;
+}
+/* --- Form Container --- */
+.container.form-container {
+    background-color: #374151; /* slightly lighter dark background */
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 650px;
+    border: 1px solid #4b5563;
 }
 
-.form-container {
-  background: #ffffff;
-  padding: 35px 40px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
-  width: 100%;
-}
-
+/* --- Heading --- */
 h2 {
-  color: #2c3e50;
-  font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #f9fafb;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-.form-label {
-  font-weight: 500;
-  color: #555;
+/* --- Form Inputs & Selects --- */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 15px;
+    background-color: #4b5563; /* input background */
+    border: 1px solid #6b7280;
+    border-radius: 8px;
+    color: #f1f5f9; /* white text inside input/select */
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
-.form-control,
-.form-select {
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  transition: all 0.3s ease;
+select option[value=""] {
+    color: #9ca3af; /* placeholder option gray */
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+input::placeholder {
+    color: #9ca3af;
+    opacity: 1;
 }
 
-.btn-primary {
-  background: #007bff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease;
+/* --- Focus Effects --- */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #3b82f6; /* bright blue border */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
-.btn-primary:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
+/* --- Labels --- */
+label {
+    font-weight: 500;
+    color: #d1d5db;
+    margin-bottom: 5px;
+    display: block;
 }
 
-@media (max-width: 576px) {
-  .form-container {
-    padding: 25px;
-  }
+/* --- Button --- */
+button[type="submit"] {
+    background: #3b82f6; /* blue accent */
+    color: #f9fafb;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #60a5fa;
+    transform: translateY(-2px);
+}
+
+/* --- Responsive --- */
+@media (max-width: 650px) {
+    .container.form-container {
+        padding: 25px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
 }

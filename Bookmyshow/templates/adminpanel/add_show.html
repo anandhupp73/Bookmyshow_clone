@@ -9,7 +9,11 @@
   <link rel="stylesheet" href="{% static "adminpanelcss/add_show.css" %}">
 </head>
 <body>
-
+	<div class="container-fluid mt-3">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mb-4">
+      ← Back to Dashboard
+    </a>
+  </div>
   <div class="container mt-5 form-container">
     <h2 class="mb-4 text-center">Add Show</h2>
 

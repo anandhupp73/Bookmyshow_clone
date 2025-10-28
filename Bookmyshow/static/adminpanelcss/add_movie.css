@@ -6,31 +6,50 @@
 /* --- General Body Styles --- */
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #1f2937; /* A modern, cool-toned slate gray */
-    color: #d1d5db; /* Soft off-white text */
+    background-color: #0f172a; /* Dark navy background */
+    color: #e2e8f0; /* Light text */
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
 }
+.top-bar{
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+.back-btn {
+    text-decoration: none;
+    background-color: #334155;
+    color: #f8fafc;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+}
 
+.back-btn:hover {
+    background-color: #475569;
+    transform: translateY(-1px);
+}
 /* --- Main Form Container --- */
 .container {
-    background-color: #374151; /* A lighter slate gray for the form */
+    background-color: #1f2937; /* Darker slate gray */
     padding: 40px;
-    border-radius: 16px; /* Softer corners */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Darker shadow */
     width: 100%;
     max-width: 600px;
-    border: 1px solid #4b5563;
+    border: 1px solid #374151; /* Dark border */
 }
 
 /* --- Heading Style --- */
 h1 {
-    color: #f9fafb; /* A brighter white for the heading */
+    color: #f1f5f9; /* Light white for heading */
     text-align: center;
     margin-bottom: 30px;
     font-weight: 700;
@@ -41,7 +60,7 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between form elements */
+    gap: 20px;
 }
 
 /* --- Common styles for Text Inputs and Textarea --- */
@@ -50,10 +69,10 @@ input[type="date"],
 textarea {
     width: 100%;
     padding: 15px;
-    background-color: #4b5563; /* Input background */
-    border: 1px solid #6b7280; /* Subtle border */
+    background-color: #111827; /* Dark background */
+    border: 1px solid #374151; /* Subtle dark border */
     border-radius: 8px;
-    color: #d1d5db;
+    color: #e2e8f0; /* Light text */
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     box-sizing: border-box;
@@ -70,13 +89,13 @@ input[type="text"]:focus,
 input[type="date"]:focus,
 textarea:focus {
     outline: none;
-    border-color: #3b82f6; /* Vibrant blue accent */
+    border-color: #3b82f6; /* Blue accent */
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
 /* --- Placeholder text style --- */
 ::placeholder {
-    color: #9ca3af;
+    color: #9ca3af; /* Gray placeholder */
     opacity: 1;
 }
 
@@ -84,13 +103,13 @@ textarea:focus {
 label {
     font-weight: 500;
     font-size: 14px;
-    color: #d1d5db;
+    color: #e2e8f0; /* Light label */
     margin-bottom: -10px;
 }
 
 input[type="file"] {
-    background-color: #4b5563;
-    border: 1px dashed #6b7280;
+    background-color: #111827;
+    border: 1px dashed #374151;
     border-radius: 8px;
     padding: 12px;
     color: #9ca3af;
@@ -98,9 +117,8 @@ input[type="file"] {
     transition: background-color 0.3s;
 }
 
-/* Style for the button inside the file input */
 input[type="file"]::-webkit-file-upload-button {
-    background: #3b82f6; /* Blue accent */
+    background: #3b82f6;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -113,14 +131,14 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 input[type="file"]::-webkit-file-upload-button:hover {
-    background: #60a5fa; /* Lighter blue on hover */
+    background: #60a5fa;
 }
 
 input[type="file"]:hover {
-    background-color: #525c6a;
+    background-color: #1e293b;
 }
 
-/* --- Message/Alert Styling (NEW) --- */
+/* --- Message/Alert Styling --- */
 .messages {
     margin-bottom: 20px;
 }
@@ -128,7 +146,7 @@ input[type="file"]:hover {
 .message {
     padding: 15px;
     border-radius: 8px;
-    color: #f9fafb;
+    color: #f1f5f9;
     text-align: center;
     font-weight: 500;
     border: 1px solid;
@@ -139,34 +157,29 @@ input[type="file"]:hover {
     margin-bottom: 0;
 }
 
-/* Success Message - Green */
 .message.success {
-    background-color: #103b2d;
+    background-color: #065f46; /* Dark green */
     border-color: #10b981;
 }
 
-/* Error Message - Red */
 .message.error {
-    background-color: #450a0a;
+    background-color: #7f1d1d; /* Dark red */
     border-color: #f87171;
 }
 
-/* Info Message - Blue */
 .message.info {
-    background-color: #1e3a8a;
+    background-color: #1e3a8a; /* Dark blue */
     border-color: #60a5fa;
 }
 
-/* Warning Message - Yellow */
 .message.warning {
-    background-color: #422006;
+    background-color: #78350f; /* Dark yellow/brown */
     border-color: #fbbf24;
 }
 
-
 /* --- Submit Button --- */
 button[type="submit"] {
-    background: #3b82f6; /* Blue accent */
+    background: #3b82f6;
     color: white;
     border: none;
     padding: 15px;
@@ -179,8 +192,8 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #60a5fa; /* Lighter blue on hover */
-    transform: translateY(-2px); /* Subtle lift effect */
+    background-color: #60a5fa;
+    transform: translateY(-2px);
 }
 
 /* --- Responsive Design --- */

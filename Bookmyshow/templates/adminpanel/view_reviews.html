@@ -11,7 +11,24 @@
 </head>
 
 <body>
+    <div class="top-bar">
+        <a href="{% url 'admin_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+    </div>
+
     <h1>All Reviews</h1>
+
+    <!-- Filter Dropdown -->
+    <form method="get" class="filter-form">
+        <label for="movie">Filter by Movie:</label>
+        <select name="movie" id="movie" onchange="this.form.submit()">
+            <option value="all" {% if not selected_movie_id or selected_movie_id == 'all' %}selected{% endif %}>All Movies</option>
+            {% for movie in movies %}
+            <option value="{{ movie.id }}" {% if movie.id|stringformat:"s" == selected_movie_id %}selected{% endif %}>
+                {{ movie.title }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
 
     {% if reviews %}
     <table>
@@ -32,13 +49,13 @@
                 <td>
                     <span class="rating-stars">
                         {% for i in "12345678910"|make_list %}
-                        {% if forloop.counter <= review.rating %} <i class="fa-solid fa-star" style="color: #f5b50a;">
-                            </i>
+                            {% if forloop.counter <= review.rating %}
+                                <i class="fa-solid fa-star" style="color: #f5b50a;"></i>
                             {% else %}
-                            <i class="fa-regular fa-star" style="color: #ccc;"></i>
+                                <i class="fa-regular fa-star" style="color: #ccc;"></i>
                             {% endif %}
-                            {% endfor %}
-                            ({{ review.rating }}/10)
+                        {% endfor %}
+                        ({{ review.rating }}/10)
                     </span>
                 </td>
                 <td>{{ review.comment }}</td>
@@ -48,7 +65,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>No reviews available.</p>
+    <p>No reviews available for the selected movie.</p>
     {% endif %}
 </body>
 

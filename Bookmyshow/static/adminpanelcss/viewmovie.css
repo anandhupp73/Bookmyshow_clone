@@ -172,3 +172,31 @@ h1 {
     font-weight: bold;
     color: white;
 }
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensures it stays on top of all other content */
+}
+
+.admin-back-button {
+    /* Style the button like a professional UI element */
+    display: inline-block;
+    padding: 10px 15px;
+    background-color:#222222 ; /* Darker background */
+    color: #e50914; /* Red accent color for the text/icon */
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid #333333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.admin-back-button:hover {
+    background-color: #e50914; /* Highlight on hover */
+    color: #f5f5f5; /* Change text to light on hover */
+    transform: translateY(-1px); /* Subtle lift effect */
+    border-color: #e50914;
+}

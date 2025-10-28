@@ -129,10 +129,26 @@ def add_castcrew(request):
         return redirect('add_castcrew')
     return render(request, 'adminpanel/add_castcrew.html', {'movies': movies})
 
+
 @admin_required
 def view_reviews(request):
-    reviews = Review.objects.all().select_related('movie').order_by('-created_at')
-    return render(request, 'adminpanel/view_reviews.html', {'reviews': reviews})
+    selected_movie_id = request.GET.get('movie')  # Get movie ID from query params
+
+    # Get all movies for the dropdown
+    movies = Movie.objects.all().order_by('title')
+
+    # Filter reviews based on selected movie (if any)
+    if selected_movie_id and selected_movie_id != "all":
+        reviews = Review.objects.filter(movie_id=selected_movie_id).select_related('movie').order_by('-created_at')
+    else:
+        reviews = Review.objects.all().select_related('movie').order_by('-created_at')
+
+    context = {
+        'reviews': reviews,
+        'movies': movies,
+        'selected_movie_id': selected_movie_id,
+    }
+    return render(request, 'adminpanel/view_reviews.html', context)
 
 @admin_required
 def update_movie(request, movie_id):
@@ -157,20 +173,18 @@ def update_movie(request, movie_id):
 
     return render(request, 'adminpanel/update_movie.html', {'movie': movie})
 
+
 @admin_required
 def delete_movie(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
     if request.method == "POST":
-        # Manually delete related objects before deleting movie
-        movie.reviews.all().delete()
-        movie.castcrew.all().delete()
-        movie.seats.all().delete()
+        # Cascade deletes take care of related models
         Wishlist.objects.filter(movie=movie).delete()
-        Booking.objects.filter(movie=movie).delete()
+        Booking.objects.filter(show__movie=movie).delete()
 
         movie.delete()
-        messages.success(request, f"'{movie.title}' and all related data have been deleted successfully.")
+        messages.success(request, f"'{movie.title}' and related data deleted successfully.")
         return redirect('view_movies')
 
     messages.error(request, "Invalid request.")
@@ -230,8 +244,18 @@ def add_show(request):
 
 @admin_required
 def view_shows(request):
-    shows = Show.objects.select_related('movie','theatre','screen').all()
-    return render(request,'adminpanel/view_shows.html',{'shows' : shows ,})
+    movie_id = request.GET.get('movie')  # get filter from dropdown
+    shows = Show.objects.select_related('movie','theatre','screen')
+
+    if movie_id:
+        shows = shows.filter(movie_id=movie_id)
+
+    movies = Movie.objects.all()  # for the dropdown
+    return render(request, 'adminpanel/view_shows.html', {
+        'shows': shows,
+        'movies': movies,
+        'request': request,  # pass request to template for retaining selected filter
+    })
 
 
 # ======== USER SECTION ========

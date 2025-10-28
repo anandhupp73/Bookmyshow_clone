@@ -1,59 +1,104 @@
+/* --- General Body --- */
 body {
-  background: linear-gradient(135deg, #2c3e50, #4ca1af);
-  font-family: 'Poppins', sans-serif;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+    background-color: #1f2937; /* dark slate gray */
+    font-family: 'Montserrat', sans-serif;
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+.top-bar {
+    position: absolute;
+    top: 20px;
+    left: 30px;
 }
 
+.back-btn {
+    text-decoration: none;
+    background-color: #334155;
+    color: #f8fafc;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.back-btn:hover {
+    background-color: #475569;
+    transform: translateY(-1px);
+}
+
+/* --- Table Container --- */
 .table-container {
-  background: #ffffff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  max-width: 1000px;
+    background-color: #374151; /* slightly lighter dark */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-h2 {
-  color: #2c3e50;
-  font-weight: 600;
+/* --- Table --- */
+table {
+    background-color: #4b5563; /* table background */
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.table {
-  border-radius: 8px;
-  overflow: hidden;
+thead.table-dark {
+    background-color: #1f2937 !important;
 }
 
-.table thead {
-  background: #212529 !important;
-  color: white;
+table th, table td {
+    vertical-align: middle;
+    color: #f1f5f9;
 }
 
-.table tbody tr:hover {
-  background-color: rgba(0, 123, 255, 0.08);
-  transition: 0.2s;
+table tbody tr:hover {
+    background-color: #3b4251;
+    transition: background 0.3s;
+}
+
+/* --- Filter Form --- */
+form select.form-select {
+    background-color: #4b5563;
+    color: #f1f5f9;
+    border: 1px solid #6b7280;
+}
+
+form select.form-select option {
+    color: #000;
+}
+
+form label {
+    font-weight: 500;
+}
+
+/* --- Buttons --- */
+.btn-success {
+    background-color: #3b82f6;
+    border: none;
+    transition: background 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #60a5fa;
 }
 
 .btn-primary {
-  background: #007bff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease;
+    background-color: #2563eb;
+    border: none;
+    transition: background 0.3s;
 }
 
 .btn-primary:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
+    background-color: #3b82f6;
 }
 
+/* --- Responsive --- */
 @media (max-width: 768px) {
-  .table-container {
-    padding: 20px;
-  }
-
-  table {
-    font-size: 0.9rem;
-  }
+    .table-container {
+        padding: 20px;
+    }
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

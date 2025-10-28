@@ -11,14 +11,16 @@
 </head>
 
 <body>
-
+    <div class="top-bar">
+            <a href="{% url 'admin_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+    </div>
     <div class="container mt-5 form-container">
         <h2 class="mb-4 text-center">Add Screen</h2>
 
         <form method="post" action="{% url 'add_screen' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label class="form-label">Select Theatre</label>
+            <label class="form-label">Select Theatre</label>        
                 <select name="theatre" class="form-select" required>
                     <option value="">-- Select Theatre --</option>
                     {% for theatre in theatres %}
