@@ -15,6 +15,8 @@ import io
 import qrcode
 from django.core.files.base import ContentFile
 import base64
+from django.utils import timezone
+
 
 
 
@@ -244,19 +246,22 @@ def add_show(request):
 
 @admin_required
 def view_shows(request):
-    movie_id = request.GET.get('movie')  # get filter from dropdown
-    shows = Show.objects.select_related('movie','theatre','screen')
+    movie_id = request.GET.get('movie')
+    shows = Show.objects.select_related('movie', 'theatre', 'screen')
+
+    # Filter out expired shows
+    today = timezone.localdate()
+    shows = shows.filter(show_date__gte=today)
 
     if movie_id:
         shows = shows.filter(movie_id=movie_id)
 
-    movies = Movie.objects.all()  # for the dropdown
+    movies = Movie.objects.all()
     return render(request, 'adminpanel/view_shows.html', {
         'shows': shows,
         'movies': movies,
-        'request': request,  # pass request to template for retaining selected filter
+        'request': request,
     })
-
 
 # ======== USER SECTION ========
 
@@ -359,12 +364,26 @@ def select_theatre(request, movie_id):
 
 
 # Step 2 — Select Show Time
+
 @login_required
 def select_show(request, movie_id, theatre_id):
     movie = get_object_or_404(Movie, id=movie_id)
     theatre = get_object_or_404(Theatre, id=theatre_id)
-    shows = Show.objects.filter(movie=movie, theatre=theatre)
-    return render(request, 'users/select_show.html', {'movie': movie, 'theatre': theatre, 'shows': shows})
+
+    today = timezone.now().date()
+    current_time = timezone.now().time()
+
+    # Only include shows that are upcoming or later today
+    shows = (
+        Show.objects.filter(movie=movie, theatre=theatre, show_date__gt=today)
+        | Show.objects.filter(movie=movie, theatre=theatre, show_date=today, show_time__gte=current_time)
+    ).order_by('show_date', 'show_time')
+
+    return render(
+        request,
+        'users/select_show.html',
+        {'movie': movie, 'theatre': theatre, 'shows': shows}
+    )
 
 @login_required
 def book_seats(request, show_id):
