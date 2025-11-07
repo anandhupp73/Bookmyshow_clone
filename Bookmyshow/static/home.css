@@ -683,4 +683,8 @@ hr {
         display: inline-block;
         margin-bottom: 6px;
     }
+      .ad-card2 img {
+    width: 90%; /* or any percentage that fits smaller screens */
+  }
+
 }
