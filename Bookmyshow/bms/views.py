@@ -401,7 +401,7 @@ def book_seats(request, show_id):
         # Check for already booked seats
         already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
         if already_booked.exists():
-            messages.error(request, "Some selected seats are already booked. Please choose different seats.")
+            # messages.error(request, "Some selected seats are already booked. Please choose different seats.")
             return redirect('book_seats', show_id=show.id)
 
         seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
@@ -434,7 +434,7 @@ def book_seats(request, show_id):
             fail_silently=False
         )
 
-        messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
+        # messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
         return redirect('booking_confirmation', booking_id=booking.id)
 
     return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
