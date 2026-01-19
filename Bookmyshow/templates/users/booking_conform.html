@@ -1,39 +1,191 @@
-
 {% extends "home.html" %}
 {% block title %}Booking Confirmed{% endblock %}
+
 {% block content %}
-<div class="confirmation">
-  <h2>✅ Booking Confirmed!</h2>
-  <p>Movie: <strong>{{ booking.show.movie.title }}</strong></p>
-  <p>Theatre: {{ booking.show.theatre.name }}</p>
-  <p>Show Time: {{ booking.show.show_date }} {{ booking.show.show_time }}</p>
-  <p>Seats: {{ booking.seats.all|join:", " }}</p>
-  <p>Total Paid: ₹{{ booking.total_amount }}</p>
-  <a href="{% url 'home' %}" class="btn">Back to Home</a>
-  <a href="{% url 'download_ticket' booking.id %}" target="_blank" class="btn">Download Ticket (PDF)</a>
+<div class="confirmation-wrapper">
+    <div class="ticket-card">
+        <div class="ticket-header">
+            <div class="success-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h2>Booking Confirmed!</h2>
+            <p class="booking-id">ID: #BMS{{ booking.id }}00</p>
+        </div>
+
+        <div class="ticket-body">
+            <h3 class="movie-title">{{ booking.show.movie.title }}</h3>
+            <p class="theatre-name">{{ booking.show.theatre.name }}</p>
+            
+            <div class="ticket-info-grid">
+                <div class="info-item">
+                    <label>DATE</label>
+                    <p>{{ booking.show.show_date }}</p>
+                </div>
+                <div class="info-item">
+                    <label>TIME</label>
+                    <p>{{ booking.show.show_time }}</p>
+                </div>
+                <div class="info-item">
+                    <label>SEATS</label>
+                    <p>{{ booking.seats.all|join:", " }}</p>
+                </div>
+                <div class="info-item">
+                    <label>AMOUNT</label>
+                    <p>₹{{ booking.total_amount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-divider">
+            <div class="notch left"></div>
+            <div class="dashed-line"></div>
+            <div class="notch right"></div>
+        </div>
+
+        <div class="ticket-footer">
+            <a href="{% url 'download_ticket' booking.id %}" target="_blank" class="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download Ticket
+            </a>
+            <a href="{% url 'home' %}" class="btn-secondary">Back to Home</a>
+        </div>
+    </div>
 </div>
 
 <style>
-.confirmation { 
-    text-align:center; 
-    margin:130px auto 20px auto;
-    max-width:500px;
-    background:#fff; 
-    padding:30px; 
-    border-radius:12px; 
-    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
-    border:1px solid black;
-}
-.btn { display:inline-block; 
-    margin-top:20px; 
-    background:#4CAF50; 
-    color:white; 
-    padding:10px 25px; 
-    border-radius:6px; 
-    text-decoration:none; 
-}
-.btn:hover { 
-    background:#45a049; 
-}
+    :root {
+        --bms-red: #f84464;
+        --success-green: #4caf50;
+        --nav-height: 140px;
+    }
+
+    .confirmation-wrapper {
+        padding-top: calc(var(--nav-height) + 40px);
+        padding-bottom: 60px;
+        display: flex;
+        justify-content: center;
+        background: #f2f5f9;
+        min-height: 100vh;
+    }
+
+    .ticket-card {
+        width: 100%;
+        max-width: 450px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .ticket-header {
+        background: var(--success-green);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .success-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+    }
+
+    .ticket-header h2 { margin: 0; font-size: 1.5rem; }
+    .booking-id { font-size: 0.8rem; opacity: 0.9; margin-top: 5px; }
+
+    .ticket-body {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .movie-title { font-size: 1.6rem; color: #333; margin-bottom: 5px; }
+    .theatre-name { color: #666; margin-bottom: 25px; }
+
+    .ticket-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        text-align: left;
+    }
+
+    .info-item label {
+        display: block;
+        font-size: 0.7rem;
+        color: #999;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+
+    .info-item p {
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    /* Ticket Divider Effect */
+    .ticket-divider {
+        position: relative;
+        height: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .dashed-line {
+        flex-grow: 1;
+        border-top: 2px dashed #eee;
+    }
+
+    .notch {
+        width: 20px;
+        height: 20px;
+        background: #f2f5f9; 
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    .notch.left { left: -10px; }
+    .notch.right { right: -10px; }
+
+    .ticket-footer {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-primary {
+        background: var(--bms-red);
+        color: white;
+        text-decoration: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+
+    .btn-secondary {
+        color: #666;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(248, 68, 100, 0.3); }
+    .btn-secondary:hover { color: var(--bms-red); }
+
+    @media (max-width: 480px) {
+        .ticket-card { margin: 0 15px; }
+    }
 </style>
 {% endblock %}

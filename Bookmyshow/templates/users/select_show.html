@@ -1,53 +1,176 @@
 {% extends "home.html" %}
 {% block title %}Select Show - {{ movie.title }}{% endblock %}
+
 {% block content %}
-<div class="container">
-  <h2>Show Times at {{ theatre.name }}</h2>
-  <div class="show-list">
-    {% for show in shows %}
-      <div class="show-card">
-        <p><strong>Date:</strong> {{ show.show_date }}</p>
-        <p><strong>Time:</strong> {{ show.show_time }}</p>
-        <p><strong>Price:</strong> ₹{{ show.ticket_price }}</p>
-        <a href="{% url 'book_seats' show.id %}" class="btn">Book Now</a>
-      </div>
-    {% empty %}
-      <p>No shows available for this theatre.</p>
-    {% endfor %}
-  </div>
+<div class="showtime-wrapper">
+    <div class="theatre-details">
+        <h1>{{ theatre.name }}</h1>
+        <p><i class="location-icon"></i> {{ theatre.location }}</p>
+    </div>
+
+    <div class="shows-container">
+        {% if shows %}
+            <div class="show-group">
+                <div class="format-header">
+                    <span class="format-tag">2D</span>
+                    <span class="language-tag">ENGLISH, MALAYALAM</span>
+                </div>
+                
+                <div class="time-grid">
+                    {% for show in shows %}
+                    <a href="{% url 'book_seats' show.id %}" class="time-slot-link">
+                        <div class="time-slot">
+                            <span class="time">{{ show.show_time|time:"h:i A" }}</span>
+                            <span class="price">₹{{ show.ticket_price }}</span>
+                            <div class="hover-info">Available</div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No shows found for the selected date.</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
 
 <style>
-.container { 
-    text-align:center; 
-    margin-top:120px; 
-}
-.show-list { 
-    display:flex; 
-    flex-wrap:wrap; 
-    justify-content:center; 
-    gap:20px; 
-}
-.show-card { 
-    background:#fdfdfd; 
-    border-radius:12px; 
-    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
-    padding:20px; 
-    width:230px; 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.btn { 
-    background:#2196F3; 
-    color:#fff; 
-    padding:10px 20px; 
-    text-decoration:none; 
-    border-radius:6px;
-    margin-top: 20px; 
-}
-.btn:hover { 
-    background:#1976D2; 
-}
+    :root {
+        --bms-red: #f84464;
+        --text-dark: #333;
+        --text-muted: #666;
+        --border: #eeeeee;
+        --nav-height: 140px; /* Aligned with your previous theatre selection */
+    }
+
+    .showtime-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding-top: calc(var(--nav-height) + 30px);
+        padding-bottom: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /* Theatre Header */
+    .theatre-details {
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 20px;
+    }
+
+    .theatre-details h1 {
+        font-size: 1.8rem;
+        color: var(--text-dark);
+        margin: 0 0 5px 0;
+    }
+
+    .theatre-details p {
+        color: var(--text-muted);
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Shows Layout */
+    .shows-container {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        padding: 30px;
+    }
+
+    .format-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .format-tag {
+        border: 1px solid #4caf50;
+        color: #4caf50;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
+    .language-tag {
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+
+    /* Time Grid */
+    .time-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .time-slot-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .time-slot {
+        width: 100px;
+        height: 70px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .time-slot .time {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #4caf50; /* Green indicates available */
+    }
+
+    .time-slot .price {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    .time-slot:hover {
+        border-color: var(--bms-red);
+        background-color: #fff5f6;
+    }
+
+    .hover-info {
+        position: absolute;
+        bottom: -20px;
+        font-size: 10px;
+        color: var(--bms-red);
+        transition: bottom 0.2s;
+    }
+
+    .time-slot:hover .hover-info {
+        bottom: 2px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 50px;
+        color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        .time-grid {
+            justify-content: flex-start;
+        }
+        .theatre-details h1 {
+            font-size: 1.4rem;
+        }
+    }
 </style>
 {% endblock %}

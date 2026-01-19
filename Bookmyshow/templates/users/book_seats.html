@@ -4,143 +4,199 @@
 {% block title %}Select Seats - {{ show.movie.title }}{% endblock %}
 
 {% block content %}
-<div class="wrap">
-    <h2>Select Seats for "{{ show.movie.title }}"</h2>
-    <p>Theatre: <strong>{{ show.theatre.name }}</strong>, Screen: <strong>{{ show.screen.screen_number }}</strong></p>
-    <p>Show Time: <strong>{{ show.show_time }}</strong> on <strong>{{ show.show_date }}</strong></p>
-    <p>Ticket Price: ₹{{ show.ticket_price }}</p>
+<div class="booking-wrapper">
+    <div class="booking-info">
+        <h1>{{ show.movie.title }}</h1>
+        <p>{{ show.theatre.name }} | {{ show.show_date }} | {{ show.show_time }}</p>
+    </div>
 
-    <form method="post">
+    <div class="screen-container">
+        <div class="screen-curve"></div>
+        <p class="screen-text">All eyes this way</p>
+    </div>
+
+    <form method="post" class="selection-form">
         {% csrf_token %}
-        <div class="seats-container">
+        <div class="seats-layout">
             {% for seat in seats %}
-            <label class="seat {% if seat.is_booked %}booked{% endif %}">
+            <label class="seat-wrapper {% if seat.is_booked %}booked{% endif %}">
                 <input type="checkbox" name="seats" value="{{ seat.id }}" {% if seat.is_booked %}disabled{% endif %}>
-                <span>{{ seat.seat_number }}</span>
+                <span class="seat-box">
+                    <small>{{ seat.seat_number }}</small>
+                </span>
             </label>
-            {% if forloop.counter|divisibleby:10 %}<br>{% endif %}
+            {% if forloop.counter|divisibleby:10 %}<div class="row-break"></div>{% endif %}
             {% endfor %}
         </div>
 
-        <div class="seat-legend">
-            <span class="legend available"></span> Available
-            <span class="legend selected"></span> Selected
-            <span class="legend booked"></span> Booked
+        <div class="legend-container">
+            <div class="legend-item"><div class="box available"></div> Available</div>
+            <div class="legend-item"><div class="box selected"></div> Selected</div>
+            <div class="legend-item"><div class="box booked"></div> Occupied</div>
         </div>
 
-        <p>Total Amount: ₹<span id="total">0</span></p>
-
-        <button type="submit" class="book-button">Book Selected Seats</button>
+        <div class="bottom-checkout">
+            <div class="price-details">
+                <p>Total: <strong>₹<span id="total">0</span></strong></p>
+            </div>
+            <button type="submit" class="book-button">Proceed to Payment</button>
+        </div>
     </form>
 </div>
 
 <style>
-.wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 130px 0 20px 0;
-}
+    :root {
+        --primary: #f84464;
+        --selected: #4caf50;
+        --booked: #eeeeee;
+        --available: #ffffff;
+        --nav-height: 140px;
+    }
 
-.seats-container {
-    max-width: 700px;
-    padding-top: 20px;
-    text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
+    .booking-wrapper {
+        padding-top: calc(var(--nav-height) + 20px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f5f5f5;
+        min-height: 100vh;
+        padding-bottom: 120px;
+    }
 
-/* Seat Styles */
-.seat {
-    position: relative;
-    width: 45px;
-    height: 45px;
-    border-radius: 8px 8px 5px 5px;
-    background-color: #e0e0e0;
-    border: 2px solid #ccc;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
+    .booking-info {
+        text-align: center;
+        margin-bottom: 40px;
+    }
 
-.seat:hover {
-    transform: scale(1.05);
-    background-color: #d1eaff;
-    border-color: #4aa3df;
-}
+    .booking-info h1 { font-size: 1.5rem; margin-bottom: 5px; color: #333; }
+    .booking-info p { color: #666; font-size: 0.9rem; }
 
-.seat input[type="checkbox"] {
-    display: none;
-}
+    /* The Cinema Screen Effect */
+    .screen-container {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 50px;
+        text-align: center;
+    }
 
-.seat input[type="checkbox"]:checked + span {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 8px 8px 5px 5px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .screen-curve {
+        height: 10px;
+        width: 100%;
+        border-bottom: 4px solid #4aa3df;
+        border-radius: 50%;
+        box-shadow: 0 15px 20px -10px rgba(74, 163, 223, 0.5);
+        margin-bottom: 10px;
+    }
 
-.seat.booked {
-    background-color: #ff4d4d;
-    color: white;
-    border-color: #cc0000;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
+    .screen-text { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 2px; }
 
-.seat span {
-    pointer-events: none;
-    display: block;
-    width: 100%;
-    height: 100%;
-    line-height: 45px;
-}
+    /* Seats Layout */
+    .seats-layout {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 600px;
+        gap: 8px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
 
-.seat-legend {
-    margin: 15px 0;
-    text-align: center;
-}
+    .row-break { width: 100%; height: 0; }
 
-.seat-legend .legend {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    vertical-align: middle;
-    border: 1px solid #ccc;
-}
+    .seat-wrapper {
+        cursor: pointer;
+    }
 
-.seat-legend .available { background-color: #e0e0e0; }
-.seat-legend .selected { background-color: #4CAF50; }
-.seat-legend .booked { background-color: #ff4d4d; }
+    .seat-box {
+        width: 34px;
+        height: 32px;
+        border: 1px solid var(--primary);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--primary);
+        transition: all 0.2s;
+        background: var(--available);
+    }
+    .seat-wrapper input { display: none; }
 
-.book-button {
-    margin-top: 20px;
-    padding: 12px 30px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-}
+    .seat-wrapper input:checked + .seat-box {
+        background-color: var(--selected);
+        border-color: var(--selected);
+        color: white;
+        transform: translateY(-2px);
+    }
 
-.book-button:hover {
-    background-color: #45a049;
-}
+    /* Booked State */
+    .seat-wrapper.booked .seat-box {
+        background-color: var(--booked);
+        border-color: #ddd;
+        color: #bbb;
+        cursor: not-allowed;
+    }
+
+    /* Hover */
+    .seat-wrapper:not(.booked):hover .seat-box {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    /* Legend */
+    .legend-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .box { width: 16px; height: 16px; border-radius: 3px; border: 1px solid #ddd; }
+    .box.available { background: white; border-color: var(--primary); }
+    .box.selected { background: var(--selected); border-color: var(--selected); }
+    .box.booked { background: var(--booked); }
+
+    
+    .bottom-checkout {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10%;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    .price-details p { font-size: 1.1rem; color: #333; }
+    .price-details strong { color: var(--primary); font-size: 1.4rem; }
+
+    .book-button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .book-button:hover { opacity: 0.9; }
+
+    @media (max-width: 600px) {
+        .seat-box { width: 28px; height: 26px; font-size: 8px; }
+        .bottom-checkout { padding: 0 20px; }
+    }
 </style>
 
 <script>
