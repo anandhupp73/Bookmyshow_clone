@@ -20,7 +20,6 @@ from django.utils import timezone
 
 
 
-
 # Create your views here.
 
 def home(request):
@@ -385,6 +384,60 @@ def select_show(request, movie_id, theatre_id):
         {'movie': movie, 'theatre': theatre, 'shows': shows}
     )
 
+# @login_required
+# def book_seats(request, show_id):
+#     show = get_object_or_404(Show, id=show_id)
+
+#     # Create seats automatically if none exist
+#     if not show.seats.exists():
+#         create_seats_for_show(show)
+
+#     seats = show.seats.all().order_by('seat_number')
+
+#     if request.method == 'POST':
+#         selected_seat_ids = request.POST.getlist('seats')
+
+#         # Check for already booked seats
+#         already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
+#         if already_booked.exists():
+#             # messages.error(request, "Some selected seats are already booked. Please choose different seats.")
+#             return redirect('book_seats', show_id=show.id)
+
+#         seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
+#         seats_to_book.update(is_booked=True)
+
+#         # Calculate total amount
+#         total_amount = seats_to_book.count() * show.ticket_price
+
+#         # Create booking
+#         booking = Booking.objects.create(user=request.user, show=show, total_amount=total_amount)
+#         booking.seats.set(seats_to_book)
+#         booking.save()
+
+#         # Send email confirmation
+#         seat_numbers = ", ".join([seat.seat_number for seat in seats_to_book])
+#         subject = f"Your seats for {show.movie.title} are booked!"
+#         message = f"Hello {request.user.username},\n\n" \
+#                   f"You have successfully booked the following seats for {show.movie.title}:\n" \
+#                   f"{seat_numbers}\n" \
+#                   f"Show: {show.show_time} on {show.show_date}\n" \
+#                   f"Theatre: {show.theatre.name}, Screen: {show.screen.screen_number}\n" \
+#                   f"Total Amount: ₹{total_amount}\n\n" \
+#                   f"Enjoy the movie!\n\nRegards,\nMovie Booking Team"
+
+#         send_mail(
+#             subject,
+#             message,
+#             settings.DEFAULT_FROM_EMAIL,
+#             [request.user.email],
+#             fail_silently=False
+#         )
+
+#         # messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
+#         return redirect('booking_confirmation', booking_id=booking.id)
+
+#     return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
+
 @login_required
 def book_seats(request, show_id):
     show = get_object_or_404(Show, id=show_id)
@@ -399,9 +452,11 @@ def book_seats(request, show_id):
         selected_seat_ids = request.POST.getlist('seats')
 
         # Check for already booked seats
-        already_booked = Seat.objects.filter(id__in=selected_seat_ids, is_booked=True)
+        already_booked = Seat.objects.filter(
+            id__in=selected_seat_ids,
+            is_booked=True
+        )
         if already_booked.exists():
-            # messages.error(request, "Some selected seats are already booked. Please choose different seats.")
             return redirect('book_seats', show_id=show.id)
 
         seats_to_book = Seat.objects.filter(id__in=selected_seat_ids)
@@ -411,33 +466,20 @@ def book_seats(request, show_id):
         total_amount = seats_to_book.count() * show.ticket_price
 
         # Create booking
-        booking = Booking.objects.create(user=request.user, show=show, total_amount=total_amount)
-        booking.seats.set(seats_to_book)
-        booking.save()
-
-        # Send email confirmation
-        seat_numbers = ", ".join([seat.seat_number for seat in seats_to_book])
-        subject = f"Your seats for {show.movie.title} are booked!"
-        message = f"Hello {request.user.username},\n\n" \
-                  f"You have successfully booked the following seats for {show.movie.title}:\n" \
-                  f"{seat_numbers}\n" \
-                  f"Show: {show.show_time} on {show.show_date}\n" \
-                  f"Theatre: {show.theatre.name}, Screen: {show.screen.screen_number}\n" \
-                  f"Total Amount: ₹{total_amount}\n\n" \
-                  f"Enjoy the movie!\n\nRegards,\nMovie Booking Team"
-
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [request.user.email],
-            fail_silently=False
+        booking = Booking.objects.create(
+            user=request.user,
+            show=show,
+            total_amount=total_amount
         )
+        booking.seats.set(seats_to_book)
 
-        # messages.success(request, f"Successfully booked {len(selected_seat_ids)} seats.")
         return redirect('booking_confirmation', booking_id=booking.id)
 
-    return render(request, 'users/book_seats.html', {'show': show, 'seats': seats})
+    return render(
+        request,
+        'users/book_seats.html',
+        {'show': show, 'seats': seats}
+    )
 
 
 
